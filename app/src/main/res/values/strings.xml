@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MyGame</string>
+    <string name="button_play_str">Play</string>
+</resources>
