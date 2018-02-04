@@ -1,11 +1,13 @@
 package pauline.mygame;
 
+import android.util.Log;
+
 import java.util.Arrays;
 
 public class TetrisMatrix {
 
-    private static int nbCellsX ;
-    private static int nbCellsY;
+    private int nbCellsX; // width of the game window
+    private int nbCellsY; // height of the game window
     private int[][] array;
     private TetrisPiece currentPiece;
 
@@ -13,8 +15,8 @@ public class TetrisMatrix {
         nbCellsX = width;
         nbCellsY = height;
         array = new int[nbCellsY][nbCellsX];
-        for (int i = 0; i < nbCellsY; i ++) {
-            Arrays.fill(array[i], 0);
+        for (int y = 0; y < nbCellsY; y ++) {
+            Arrays.fill(array[y], 0);
         }
 
         currentPiece = addNewPiece(1);
@@ -24,6 +26,15 @@ public class TetrisMatrix {
         this(20, 10);
     }
 
+    private void placePiece(TetrisPiece p) {
+        for (int y = 0; y < p.getHeight(); y++) {
+            for (int x = 0; x < p.getWidth(); x++) {
+                if (p.getShape()[y][x] == 1)
+                    array[p.getOriginY() + y][p.getOriginX() + x] = p.getType();
+            }
+        }
+    }
+
     // TODO
     public void clearCells(int rowNumber, int numberOfRows) {
 
@@ -31,14 +42,9 @@ public class TetrisMatrix {
 
     public TetrisPiece addNewPiece(int type) {
         TetrisPiece p = new TetrisPiece(type);
-        p.setOriginX(0);
-        p.setOriginY(nbCellsX / 2 - 1);
-        for (int i = 0; i < p.getHeight(); i++) {
-            for (int j = 0; j < p.getWidth(); j++) {
-                if (p.getShape()[i][j] == 1)
-                    array[p.getOriginX()][p.getOriginY() + j] = type;
-            }
-        }
+        p.setOriginX(nbCellsX / 2 - 1);
+        p.setOriginY(0);
+        placePiece(p);
         return p;
     }
 
@@ -48,26 +54,32 @@ public class TetrisMatrix {
     }
 
     public void dropPiece(TetrisPiece p) {
-        for (int i = 0; i < p.getHeight(); i++) {
-            for (int j = 0; j < p.getWidth(); j++) {
-                if (p.getShape()[i][j] == 1)
-                    array[p.getOriginX()][p.getOriginY() + j] = 0;
+
+        // do not move the piece outside of the game window
+        if (p.getOriginY() + p.getHeight() < nbCellsY) {
+
+            // remove the piece from its old position
+            // TODO function
+            for (int y = 0; y < p.getHeight(); y++) {
+                for (int x = 0; x < p.getWidth(); x++) {
+                    if (p.getShape()[y][x] == 1)
+                        array[p.getOriginY() + y][p.getOriginX() + x] = 0;
+                }
             }
+
+            // move the piece to its new position
+            p.setOriginY(p.getOriginY() + 1);
+            placePiece(p);
+
         }
-        p.setOriginY(p.getOriginY() + 1);
-        for (int i = 0; i < p.getHeight(); i++) {
-            for (int j = 0; j < p.getWidth(); j++) {
-                if (p.getShape()[i][j] == 1)
-                    array[p.getOriginX()][p.getOriginY() + j] = p.getType();
-            }
-        }
+
     }
 
-    public static int getNbCellsX() {
+    public int getNbCellsX() {
         return nbCellsX;
     }
 
-    public static int getNbCellsY() {
+    public int getNbCellsY() {
         return nbCellsY;
     }
 

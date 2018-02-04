@@ -1,7 +1,5 @@
 package pauline.mygame;
 
-import java.util.Arrays;
-
 public class TetrisPiece {
 
     private int type;
@@ -13,16 +11,18 @@ public class TetrisPiece {
     private int originY;
 
     // type: int between 1 and 7
-    public TetrisPiece(int type) {
-        type = (type < 1 || type > 7) ? 1 : type; // type = 0 for empty cells; type = 1 to 7 for tetris shapes
+    public TetrisPiece(int _type) {
+        type = (_type < 1 || _type > 7) ? 1 : _type; // type = 0 for empty cells; type = 1 to 7 for tetris shapes
         type = 1; // TODO remove
         switch (type) {
             case 1: // O
                 width = 2;
                 height = 2;
                 shape = new int[height][width];
-                for (int i = 0; i < height; i++) {
-                    Arrays.fill(shape[i], 1);
+                for (int y = 0; y < height; y++) {
+                    for (int x = 0; x < width; x++) {
+                        shape[y][x] = 1;
+                    }
                 }
                 break;
         }

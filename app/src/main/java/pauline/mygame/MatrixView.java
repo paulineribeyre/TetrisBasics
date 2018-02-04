@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -28,23 +29,24 @@ public class MatrixView extends View {
         super(context, attrs);
         matrix = new TetrisMatrix();
         initColorArray();
-        Log.d("debug", "creating MatrixView"); // TODO remove
+        //Log.d("mydebug", "MatrixView.MatrixView"); // TODO remove
 
         new Thread() {
             @Override public void run() {
                 while (true) {
                     try {
                         Thread.sleep(moveDelay);
-                        initColorArray();
+                        moveGame();
                     } catch ( InterruptedException e ) {}
                 }
             }
         }.start();
     }
 
-    private void calculateCellSize(int screenWidth, int screenHeigth) {
+    private void calculateCellSize(int screenWidth, int screenHeight) {
         sizeCellX = (int)Math.floor(screenWidth / matrix.getNbCellsX());
-        sizeCellY = (int)Math.floor(screenHeigth /  matrix.getNbCellsY());
+        sizeCellY = (int)Math.floor(screenHeight / matrix.getNbCellsY());
+        sizeCellX = sizeCellY = Math.min(sizeCellX, sizeCellY);
     }
 
     @Override
@@ -68,28 +70,39 @@ public class MatrixView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Drawable cell = getResources().getDrawable(R.drawable.cell);
-        int color;
+        Paint myPaint = new Paint();
 
-        for (int i = 0; i <  matrix.getNbCellsY(); i ++) {
-            for (int j = 0; j <  matrix.getNbCellsX(); j ++) {
-                color = colorArray[matrix.getArray()[i][j]];
-                cell.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-                cell.setBounds(j * sizeCellY, i * sizeCellX, (j + 1) * sizeCellY, (i + 1) * sizeCellX);
-                cell.draw(canvas);
+        for (int y = 0; y <  matrix.getNbCellsY(); y ++) {
+            for (int x = 0; x <  matrix.getNbCellsX(); x ++) {
+                myPaint.setColor(colorArray[matrix.getArray()[y][x]]);
+                canvas.drawRect(x * sizeCellX, y * sizeCellY, (x + 1) * sizeCellX, (y + 1) * sizeCellY, myPaint);
             }
         }
     }
 
     // TODO
     private void moveGame() {
-
+        //matrix.dropPiece();
+        //this.invalidate();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        matrix.dropPiece();
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            //Log.d("mydebug", "MatrixView.onTouchEvent");
+            matrix.dropPiece();
+            this.invalidate();
+
+            // do not catch more than one touch: wait 20ms
+            /*try {
+                Thread.sleep(100);
+                Log.d("mydebug", "MatrixView.onTouchEvent slept");
+            } catch (InterruptedException e) {
+                Log.d("mydebug", "MatrixView.onTouchEvent InterruptedException:" + e);
+            }*/
+        }
+
         return true;
     }
 
