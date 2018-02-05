@@ -19,7 +19,7 @@ public class TetrisMatrix {
             Arrays.fill(array[y], 0);
         }
 
-        currentPiece = addNewPiece(1);
+        addNewPiece(1);
     }
 
     public TetrisMatrix() {
@@ -40,38 +40,50 @@ public class TetrisMatrix {
 
     }
 
-    public TetrisPiece addNewPiece(int type) {
+    public void addNewPiece(int type) {
         TetrisPiece p = new TetrisPiece(type);
         p.setOriginX(nbCellsX / 2 - 1);
         p.setOriginY(0);
         placePiece(p);
-        return p;
+        currentPiece = p;
+    }
+
+    // TODO change to any horizontal/vertical collision
+    private boolean isCollision() {
+        boolean collision = false;
+        int posY = currentPiece.getOriginY() + currentPiece.getHeight();
+        if (posY >= nbCellsY || array[posY][currentPiece.getOriginX()] != 0)
+            collision = true;
+        if (collision) Log.d("mydebug", "TetrisMatrix.isCollision collision");
+        return collision;
     }
 
     // TODO change to any horizontal/vertical movement
-    public void dropPiece() {
-        dropPiece(currentPiece);
-    }
+    public boolean dropPiece() {
 
-    public void dropPiece(TetrisPiece p) {
+        boolean dropped = false;
 
         // do not move the piece outside of the game window
-        if (p.getOriginY() + p.getHeight() < nbCellsY) {
+        if (!isCollision()) {
 
             // remove the piece from its old position
             // TODO function
-            for (int y = 0; y < p.getHeight(); y++) {
-                for (int x = 0; x < p.getWidth(); x++) {
-                    if (p.getShape()[y][x] == 1)
-                        array[p.getOriginY() + y][p.getOriginX() + x] = 0;
+            for (int y = 0; y < currentPiece.getHeight(); y++) {
+                for (int x = 0; x < currentPiece.getWidth(); x++) {
+                    if (currentPiece.getShape()[y][x] == 1)
+                        array[currentPiece.getOriginY() + y][currentPiece.getOriginX() + x] = 0;
                 }
             }
 
             // move the piece to its new position
-            p.setOriginY(p.getOriginY() + 1);
-            placePiece(p);
+            currentPiece.setOriginY(currentPiece.getOriginY() + 1);
+            placePiece(currentPiece);
+
+            dropped = true;
 
         }
+
+        return dropped;
 
     }
 

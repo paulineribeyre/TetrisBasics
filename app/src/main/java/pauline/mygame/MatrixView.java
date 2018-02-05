@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -23,24 +25,32 @@ public class MatrixView extends View {
     private int sizeCellY;
     private Bitmap[] cellArray;
 
-    private int moveDelay = 1200;
+    private int moveDelay = 300; //1200;
+    private RefreshHandler refreshHandler = new RefreshHandler();
 
     public MatrixView(Context context, AttributeSet attrs) {
         super(context, attrs);
         matrix = new TetrisMatrix();
-        initColorArray();
-        //Log.d("mydebug", "MatrixView.MatrixView"); // TODO remove
 
-        new Thread() {
-            @Override public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(moveDelay);
-                        moveGame();
-                    } catch ( InterruptedException e ) {}
-                }
-            }
-        }.start();
+        startGame();
+    }
+
+    private void startGame() {
+        initColorArray();
+        refreshHandler.sendEmptyMessage(1); // start the game
+    }
+
+    public int getRandomColor(){
+        Random rnd = new Random();
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+    public void initColorArray() {
+        colorArray = new int[8];
+        colorArray[0] = Color.WHITE;
+        for (int i = 1; i < 8; i++) {
+            colorArray[i] = getRandomColor();
+        }
     }
 
     private void calculateCellSize(int screenWidth, int screenHeight) {
@@ -54,36 +64,37 @@ public class MatrixView extends View {
         calculateCellSize(w, h);
     }
 
-    public void initColorArray() {
-        colorArray = new int[8];
-        colorArray[0] = Color.WHITE;
-        for (int i = 1; i < 8; i++) {
-            colorArray[i] = getRandomColor();
-        }
-    }
-
-    public int getRandomColor(){
-        Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-    }
-
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Paint myPaint = new Paint();
+        // Drawable cell = getResources().getDrawable(R.drawable.cell); // use drawable image instead of rectangles
 
         for (int y = 0; y <  matrix.getNbCellsY(); y ++) {
             for (int x = 0; x <  matrix.getNbCellsX(); x ++) {
                 myPaint.setColor(colorArray[matrix.getArray()[y][x]]);
                 canvas.drawRect(x * sizeCellX, y * sizeCellY, (x + 1) * sizeCellX, (y + 1) * sizeCellY, myPaint);
+                // cell.setColorFilter(colorArray[matrix.getArray()[y][x]], PorterDuff.Mode.MULTIPLY);
+                // cell.setBounds(y * sizeCellY, x * sizeCellX, (y + 1) * sizeCellY, (x + 1) * sizeCellX);
+                // cell.draw(canvas);
             }
         }
     }
 
-    // TODO
     private void moveGame() {
-        //matrix.dropPiece();
-        //this.invalidate();
+        if (!matrix.dropPiece()) {
+            matrix.addNewPiece(1);
+        }
+    }
+
+    private class RefreshHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            sendEmptyMessageDelayed(0, moveDelay); // wait
+            //Log.d("mydebug", "MatrixView.RefreshHandler moving");
+            moveGame();
+            MatrixView.this.invalidate();
+        }
     }
 
     @Override
@@ -91,16 +102,8 @@ public class MatrixView extends View {
     {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             //Log.d("mydebug", "MatrixView.onTouchEvent");
-            matrix.dropPiece();
+            //matrix.dropPiece();
             this.invalidate();
-
-            // do not catch more than one touch: wait 20ms
-            /*try {
-                Thread.sleep(100);
-                Log.d("mydebug", "MatrixView.onTouchEvent slept");
-            } catch (InterruptedException e) {
-                Log.d("mydebug", "MatrixView.onTouchEvent InterruptedException:" + e);
-            }*/
         }
 
         return true;
