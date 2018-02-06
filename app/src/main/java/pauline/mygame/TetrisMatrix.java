@@ -6,8 +6,7 @@ import java.util.Arrays;
 
 public class TetrisMatrix {
 
-    private int nbCellsX; // width of the game window
-    private int nbCellsY; // height of the game window
+    private int nbCellsX, nbCellsY; // width and height of the game window
     private int[][] array;
     private TetrisPiece currentPiece;
 
@@ -31,6 +30,7 @@ public class TetrisMatrix {
             for (int x = 0; x < p.getWidth(); x++) {
                 if (p.getShape()[y][x] == 1)
                     array[p.getOriginY() + y][p.getOriginX() + x] = p.getType();
+                    array[p.getOriginY() + y][p.getOriginX() + x] = p.getType();
             }
         }
     }
@@ -48,18 +48,78 @@ public class TetrisMatrix {
         currentPiece = p;
     }
 
+    public enum DIRECTION {
+        DOWN,
+        LEFT,
+        RIGHT;
+    }
+
     // TODO change to any horizontal/vertical collision
-    private boolean isCollision() {
+    private boolean isCollision(DIRECTION d) {
         boolean collision = false;
-        int posY = currentPiece.getOriginY() + currentPiece.getHeight();
-        if (posY >= nbCellsY || array[posY][currentPiece.getOriginX()] != 0)
+        int newX = currentPiece.getOriginX();
+        int newY = currentPiece.getOriginY();
+
+        // check if the piece will collide with another piece
+        switch(d){
+            case DOWN:
+                newY += currentPiece.getHeight();
+                if (newY >= nbCellsY || array[newY][newX] != 0)
+                    collision = true;
+                break;
+            case LEFT:
+                newX -= 1;
+                break;
+            case RIGHT:
+                newX += currentPiece.getWidth();
+                break;
+        }
+
+        if (newX < 0 || newX >= nbCellsX || newY >= nbCellsY || array[newY][newX] != 0)
             collision = true;
-        if (collision) Log.d("mydebug", "TetrisMatrix.isCollision collision");
+
+        //if (collision) Log.d("mydebug", "TetrisMatrix.isCollision collision");
+
         return collision;
     }
 
-    // TODO change to any horizontal/vertical movement
-    public boolean dropPiece() {
+    public boolean movePiece(DIRECTION d) {
+        boolean moved = false;
+
+        // do not move the piece outside of the game window
+        if (!isCollision(d)) {
+
+            // remove the piece from its old position
+            // TODO function
+            for (int y = 0; y < currentPiece.getHeight(); y++) {
+                for (int x = 0; x < currentPiece.getWidth(); x++) {
+                    if (currentPiece.getShape()[y][x] == 1)
+                        array[currentPiece.getOriginY() + y][currentPiece.getOriginX() + x] = 0;
+                }
+            }
+
+            // move the piece to its new position
+            switch(d){
+                case DOWN:
+                    currentPiece.setOriginY(currentPiece.getOriginY() + 1);
+                    break;
+                case LEFT:
+                    currentPiece.setOriginX(currentPiece.getOriginX() - 1);
+                    break;
+                case RIGHT:
+                    currentPiece.setOriginX(currentPiece.getOriginX() + 1);
+                    break;
+            }
+
+            placePiece(currentPiece);
+            moved = true;
+
+        }
+
+        return moved;
+    }
+
+    /*public boolean dropPiece() {
 
         boolean dropped = false;
 
@@ -85,7 +145,7 @@ public class TetrisMatrix {
 
         return dropped;
 
-    }
+    }*/
 
     public int getNbCellsX() {
         return nbCellsX;

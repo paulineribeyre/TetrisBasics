@@ -19,14 +19,18 @@ import java.util.Random;
 public class MatrixView extends View {
 
     private TetrisMatrix matrix;
+    private int matrixWidth, matrixHeight;
 
     private int[] colorArray; // one color for each Tetris shape
-    private int sizeCellX;
-    private int sizeCellY;
+    private int sizeCellX, sizeCellY;
     private Bitmap[] cellArray;
 
     private int moveDelay = 300; //1200;
     private RefreshHandler refreshHandler = new RefreshHandler();
+
+    float initialX = 0; // X position of finger on initial touch
+    private int movementSensibilityX = 20;
+    private int touchDelay = 20;
 
     public MatrixView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,6 +66,8 @@ public class MatrixView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         calculateCellSize(w, h);
+        matrixWidth = sizeCellX * matrix.getNbCellsX();
+        matrixHeight = sizeCellY * matrix.getNbCellsY();
     }
 
     @Override
@@ -82,28 +88,86 @@ public class MatrixView extends View {
     }
 
     private void moveGame() {
-        if (!matrix.dropPiece()) {
-            matrix.addNewPiece(1);
+        if (matrix.movePiece(TetrisMatrix.DIRECTION.DOWN)) {
+            //refreshHandler.removeMessages(0);
+            refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
+        }
+        else { // the current piece cannot drop anymore
+            //matrix.addNewPiece(1);
+            refreshHandler.sendEmptyMessageDelayed(1, moveDelay);
         }
     }
 
     private class RefreshHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            sendEmptyMessageDelayed(0, moveDelay); // wait
-            //Log.d("mydebug", "MatrixView.RefreshHandler moving");
-            moveGame();
-            MatrixView.this.invalidate();
+            if (msg.what == 1) { // the current piece cannot drop anymore
+                matrix.addNewPiece(1);
+                MatrixView.this.invalidate(); // redraw
+                //this.removeMessages(0);
+                sendEmptyMessageDelayed(0, moveDelay);
+            }
+
+            else {
+                moveGame(); //Log.d("mydebug", "MatrixView.RefreshHandler moving");
+                MatrixView.this.invalidate(); // redraw
+            }
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            //Log.d("mydebug", "MatrixView.onTouchEvent");
-            //matrix.dropPiece();
-            this.invalidate();
+
+        //Log.d("mydebug", "MatrixView.onTouchEvent");
+
+        synchronized (event) { // prevents touchscreen events from flooding the main thread
+
+            // initial touch
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                initialX = event.getRawX();
+            }
+
+            // detect type of sliding movement
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                float curX = event.getRawX();
+                float curY = event.getRawY();
+
+                // X movement: rotation
+                if (Math.abs(initialX - curX) >= movementSensibilityX) {
+                    if (initialX > curX) { // rotate left
+                        Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
+                    } else { // rotate right
+                        Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
+                    }
+                }
+
+                // simple touch: move on X axis
+                else {
+                    // TODO add touch at the bottom of the screen to drop piece fast
+                    if (initialX < matrixWidth / 2) { // move left
+                        //Log.d("mydebug", "MatrixView.onTouchEvent move left");
+                        matrix.movePiece(TetrisMatrix.DIRECTION.LEFT);
+                    } else { // move right
+                        //Log.d("mydebug", "MatrixView.onTouchEvent move right");
+                        matrix.movePiece(TetrisMatrix.DIRECTION.RIGHT);
+                    }
+
+                    //if (refreshHandler.hasMessages(1) == true) {
+                        //Log.d("mydebug", "MatrixView.onTouchEvent C hasMessages");
+                        //refreshHandler.removeMessages(1);
+                    //}
+                    //refreshHandler.sendEmptyMessageDelayed(0, 400);
+                }
+
+
+            /*try {
+                Thread.sleep(touchDelay);
+            } catch (InterruptedException e) { }*/
+
+                // redraw
+                //this.invalidate();
+            }
         }
 
         return true;

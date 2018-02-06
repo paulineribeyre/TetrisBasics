@@ -3,12 +3,10 @@ package pauline.mygame;
 public class TetrisPiece {
 
     private int type;
-    private int width;
-    private int height;
+    private int width, height;
     private int[][] shape;
 
-    private int originX;
-    private int originY;
+    private int originX, originY;
 
     // type: int between 1 and 7
     public TetrisPiece(int _type) {
