@@ -1,5 +1,7 @@
 package pauline.mygame;
 
+import android.util.Log;
+
 public class TetrisPiece {
 
     private int type;
@@ -8,10 +10,10 @@ public class TetrisPiece {
 
     private int originX, originY;
 
-    // type: int between 1 and 7
-    public TetrisPiece(int _type) {
-        type = (_type < 1 || _type > 7) ? 1 : _type; // type = 0 for empty cells; type = 1 to 7 for tetris shapes
-        type = 1; // TODO remove
+    public TetrisPiece(int type) {
+
+        this.type = type;
+
         switch (type) {
             case 1: // O
                 width = 2;
@@ -22,6 +24,33 @@ public class TetrisPiece {
                         shape[y][x] = 1;
                     }
                 }
+                break;
+
+            case 2: // I
+                break;
+
+            case 3: // T
+                break;
+
+            case 4: // S
+                break;
+
+            case 5: // Z
+                width = 3;
+                height = 2;
+                shape = new int[height][width];
+                for (int y = 0; y < height; y++) {
+                    for (int x = y; x < y + width - 1; x++) {
+                        shape[y][x] = 1;
+                    }
+                }
+                break;
+
+            case 6: // L
+                break;
+
+            case 7: // J
+            default:
                 break;
         }
     }

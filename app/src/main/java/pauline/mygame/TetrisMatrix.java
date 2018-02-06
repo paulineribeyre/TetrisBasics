@@ -3,6 +3,7 @@ package pauline.mygame;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class TetrisMatrix {
 
@@ -18,7 +19,7 @@ public class TetrisMatrix {
             Arrays.fill(array[y], 0);
         }
 
-        addNewPiece(1);
+        addNewPiece();
     }
 
     public TetrisMatrix() {
@@ -40,7 +41,12 @@ public class TetrisMatrix {
 
     }
 
-    public void addNewPiece(int type) {
+    public void addNewPiece() {
+        int[] arr = {1, 5};
+        int type = arr[new Random().nextInt(arr.length)]; // TODO remove
+        type = 1;
+
+        //int type = new Random().nextInt(8) + 1;
         TetrisPiece p = new TetrisPiece(type);
         p.setOriginX(nbCellsX / 2 - 1);
         p.setOriginY(0);
@@ -55,30 +61,37 @@ public class TetrisMatrix {
     }
 
     // TODO change to any horizontal/vertical collision
-    private boolean isCollision(DIRECTION d) {
+    private boolean isCollision(DIRECTION d, int[][] array) {
         boolean collision = false;
-        int newX = currentPiece.getOriginX();
-        int newY = currentPiece.getOriginY();
+        int newOriginX = currentPiece.getOriginX();
+        int newOriginY = currentPiece.getOriginY();
+        int newX, newY;
 
         // check if the piece will collide with another piece
         switch(d){
             case DOWN:
-                newY += currentPiece.getHeight();
-                if (newY >= nbCellsY || array[newY][newX] != 0)
-                    collision = true;
+                newOriginY += 1;
                 break;
             case LEFT:
-                newX -= 1;
+                newOriginX -= 1;
                 break;
             case RIGHT:
-                newX += currentPiece.getWidth();
+                newOriginX += 1;
                 break;
         }
 
-        if (newX < 0 || newX >= nbCellsX || newY >= nbCellsY || array[newY][newX] != 0)
-            collision = true;
+        for (int x = 0; x < currentPiece.getWidth(); x++) {
+            newX = newOriginX + x;
+            for (int y = 0; y < currentPiece.getHeight(); y++) {
+                newY = newOriginY + y;
+                if (newX < 0 || newX >= nbCellsX || newY >= nbCellsY || array[newY][newX] != 0) {
+                    collision = true;
+                    break;
+                }
+            }
+        }
 
-        //if (collision) Log.d("mydebug", "TetrisMatrix.isCollision collision");
+        if (collision) Log.d("mydebug", "TetrisMatrix.isCollision collision");
 
         return collision;
     }
@@ -86,17 +99,23 @@ public class TetrisMatrix {
     public boolean movePiece(DIRECTION d) {
         boolean moved = false;
 
-        // do not move the piece outside of the game window
-        if (!isCollision(d)) {
-
-            // remove the piece from its old position
-            // TODO function
-            for (int y = 0; y < currentPiece.getHeight(); y++) {
-                for (int x = 0; x < currentPiece.getWidth(); x++) {
-                    if (currentPiece.getShape()[y][x] == 1)
-                        array[currentPiece.getOriginY() + y][currentPiece.getOriginX() + x] = 0;
-                }
+        // remove the piece from its old position
+        int[][] arrayWithoutPiece = new int[nbCellsY][nbCellsX];
+        for (int y = 0; y < nbCellsY; y++) {
+            for (int x = 0; x < nbCellsX; x++)
+                arrayWithoutPiece[y][x] = array[y][x];
+        }
+        for (int y = 0; y < currentPiece.getHeight(); y++) {
+            for (int x = 0; x < currentPiece.getWidth(); x++) {
+                if (currentPiece.getShape()[y][x] == 1)
+                    arrayWithoutPiece[currentPiece.getOriginY() + y][currentPiece.getOriginX() + x] = 0;
             }
+        }
+
+        // do not move the piece if it collides with the game window or another piece
+        if (!isCollision(d, arrayWithoutPiece)) {
+
+            array = arrayWithoutPiece.clone();
 
             // move the piece to its new position
             switch(d){
@@ -118,34 +137,6 @@ public class TetrisMatrix {
 
         return moved;
     }
-
-    /*public boolean dropPiece() {
-
-        boolean dropped = false;
-
-        // do not move the piece outside of the game window
-        if (!isCollision()) {
-
-            // remove the piece from its old position
-            // TODO function
-            for (int y = 0; y < currentPiece.getHeight(); y++) {
-                for (int x = 0; x < currentPiece.getWidth(); x++) {
-                    if (currentPiece.getShape()[y][x] == 1)
-                        array[currentPiece.getOriginY() + y][currentPiece.getOriginX() + x] = 0;
-                }
-            }
-
-            // move the piece to its new position
-            currentPiece.setOriginY(currentPiece.getOriginY() + 1);
-            placePiece(currentPiece);
-
-            dropped = true;
-
-        }
-
-        return dropped;
-
-    }*/
 
     public int getNbCellsX() {
         return nbCellsX;

@@ -101,8 +101,8 @@ public class MatrixView extends View {
     private class RefreshHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 1) { // the current piece cannot drop anymore
-                matrix.addNewPiece(1);
+            if (msg.what == 1) { // new game, or the current piece cannot drop anymore
+                matrix.addNewPiece();
                 MatrixView.this.invalidate(); // redraw
                 //this.removeMessages(0);
                 sendEmptyMessageDelayed(0, moveDelay);
