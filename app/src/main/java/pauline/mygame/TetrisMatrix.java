@@ -19,7 +19,7 @@ public class TetrisMatrix {
             Arrays.fill(array[y], 0);
         }
 
-        addNewPiece();
+        //addNewPiece();
     }
 
     public TetrisMatrix() {
@@ -31,7 +31,6 @@ public class TetrisMatrix {
             for (int x = 0; x < p.getWidth(); x++) {
                 if (p.getShape()[y][x] == 1)
                     array[p.getOriginY() + y][p.getOriginX() + x] = p.getType();
-                    array[p.getOriginY() + y][p.getOriginX() + x] = p.getType();
             }
         }
     }
@@ -41,20 +40,29 @@ public class TetrisMatrix {
 
     }
 
-    public void addNewPiece() {
+    public boolean addNewPiece() {
+        boolean canAdd = true;
+
         int[] arr = {1, 5};
         int type = arr[new Random().nextInt(arr.length)]; // TODO remove
-        type = 1;
+        type = 5;
 
         //int type = new Random().nextInt(8) + 1;
         TetrisPiece p = new TetrisPiece(type);
         p.setOriginX(nbCellsX / 2 - 1);
         p.setOriginY(0);
-        placePiece(p);
         currentPiece = p;
+
+        if (!isCollision(DIRECTION.NONE, array))
+            placePiece(p);
+        else
+            canAdd = false;
+
+        return canAdd;
     }
 
     public enum DIRECTION {
+        NONE,
         DOWN,
         LEFT,
         RIGHT;
@@ -84,7 +92,8 @@ public class TetrisMatrix {
             newX = newOriginX + x;
             for (int y = 0; y < currentPiece.getHeight(); y++) {
                 newY = newOriginY + y;
-                if (newX < 0 || newX >= nbCellsX || newY >= nbCellsY || array[newY][newX] != 0) {
+                if (currentPiece.getShape()[y][x] == 1 &&
+                        (newX < 0 || newX >= nbCellsX || newY >= nbCellsY || array[newY][newX] != 0)) {
                     collision = true;
                     break;
                 }

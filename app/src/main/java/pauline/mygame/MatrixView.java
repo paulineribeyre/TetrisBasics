@@ -102,10 +102,17 @@ public class MatrixView extends View {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) { // new game, or the current piece cannot drop anymore
-                matrix.addNewPiece();
-                MatrixView.this.invalidate(); // redraw
-                //this.removeMessages(0);
-                sendEmptyMessageDelayed(0, moveDelay);
+                if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisMatrix.DIRECTION.DOWN)) { // special case when the piece is moved after colliding
+                    //refreshHandler.removeMessages(0);
+                    refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
+                }
+                else if (matrix.addNewPiece()) {
+                    MatrixView.this.invalidate(); // redraw
+                    //this.removeMessages(0);
+                    sendEmptyMessageDelayed(0, moveDelay);
+                }
+                else
+                    Log.d("mydebug", "Game over");
             }
 
             else {

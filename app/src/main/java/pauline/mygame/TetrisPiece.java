@@ -2,6 +2,8 @@ package pauline.mygame;
 
 import android.util.Log;
 
+import java.util.Arrays;
+
 public class TetrisPiece {
 
     private int type;
@@ -53,6 +55,11 @@ public class TetrisPiece {
             default:
                 break;
         }
+    }
+
+    // TODO
+    private void rotate(int direction) { // -1: rotate left; 1: rotate right
+
     }
 
     public int getType() {
