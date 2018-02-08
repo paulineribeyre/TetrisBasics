@@ -88,7 +88,7 @@ public class MatrixView extends View {
     }
 
     private void moveGame() {
-        if (matrix.movePiece(TetrisMatrix.DIRECTION.DOWN)) {
+        if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
             //refreshHandler.removeMessages(0);
             refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
         }
@@ -102,7 +102,7 @@ public class MatrixView extends View {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) { // new game, or the current piece cannot drop anymore
-                if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisMatrix.DIRECTION.DOWN)) { // special case when the piece is moved after colliding
+                if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // special case when the piece is moved after colliding
                     //refreshHandler.removeMessages(0);
                     refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
                 }
@@ -143,9 +143,11 @@ public class MatrixView extends View {
                 // X movement: rotation
                 if (Math.abs(initialX - curX) >= movementSensibilityX) {
                     if (initialX > curX) { // rotate left
-                        Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
+                        //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
+                        matrix.getCurrentPiece().rotate(TetrisPiece.DIRECTION.LEFT);
                     } else { // rotate right
-                        Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
+                        //Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
+                        matrix.getCurrentPiece().rotate(TetrisPiece.DIRECTION.RIGHT);
                     }
                 }
 
@@ -154,10 +156,10 @@ public class MatrixView extends View {
                     // TODO add touch at the bottom of the screen to drop piece fast
                     if (initialX < matrixWidth / 2) { // move left
                         //Log.d("mydebug", "MatrixView.onTouchEvent move left");
-                        matrix.movePiece(TetrisMatrix.DIRECTION.LEFT);
+                        matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
                     } else { // move right
                         //Log.d("mydebug", "MatrixView.onTouchEvent move right");
-                        matrix.movePiece(TetrisMatrix.DIRECTION.RIGHT);
+                        matrix.movePiece(TetrisPiece.DIRECTION.RIGHT);
                     }
 
                     //if (refreshHandler.hasMessages(1) == true) {

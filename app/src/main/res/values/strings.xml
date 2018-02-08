@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">MyGame</string>
+    <string name="app_name">MyTetris</string>
     <string name="button_play_str">Play</string>
 </resources>

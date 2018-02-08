@@ -1,9 +1,5 @@
 package pauline.mygame;
 
-import android.util.Log;
-
-import java.util.Arrays;
-
 public class TetrisPiece {
 
     private int type;
@@ -57,9 +53,28 @@ public class TetrisPiece {
         }
     }
 
-    // TODO
-    private void rotate(int direction) { // -1: rotate left; 1: rotate right
+    public enum DIRECTION {
+        NONE,
+        DOWN,
+        LEFT,
+        RIGHT;
+    }
 
+    public void rotate(DIRECTION d) {
+        int[][] oldShape = shape.clone();
+        /*int[][] oldShape = new int[height][width];
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+                oldShape[y][x] = shape[y][x];*/
+
+        int tmp = width;
+        width = height;
+        height = tmp;
+
+        shape = new int[height][width];
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+                shape[y][x] = oldShape[x][y];
     }
 
     public int getType() {
