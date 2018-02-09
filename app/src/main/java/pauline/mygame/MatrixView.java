@@ -144,10 +144,10 @@ public class MatrixView extends View {
                 if (Math.abs(initialX - curX) >= movementSensibilityX) {
                     if (initialX > curX) { // rotate left
                         //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
-                        matrix.getCurrentPiece().rotate(TetrisPiece.DIRECTION.LEFT);
+                        matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
                     } else { // rotate right
                         //Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
-                        matrix.getCurrentPiece().rotate(TetrisPiece.DIRECTION.RIGHT);
+                        matrix.rotatePiece(TetrisPiece.DIRECTION.RIGHT);
                     }
                 }
 

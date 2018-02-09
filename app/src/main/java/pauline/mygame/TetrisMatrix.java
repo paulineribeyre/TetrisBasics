@@ -26,11 +26,25 @@ public class TetrisMatrix {
         this(20, 10);
     }
 
+    public void printMatrix(int[][] array) { // TODO remove
+        String str;
+        for (int y = 0; y < nbCellsY; y ++) {
+            str = "";
+            for (int x = 0; x < nbCellsX; x++) {
+                str += array[y][x] + " ";
+            }
+            Log.d("mydebug", "TetrisMatrix.printMatrix " + str);
+        }
+    }
+
     private void placePieceOnMatrix() {
         for (int y = 0; y < currentPiece.getHeight(); y++) {
             for (int x = 0; x < currentPiece.getWidth(); x++) {
-                if (currentPiece.getShape()[y][x] == 1)
+                if (currentPiece.getShape()[y][x] == 1) {
+                    Log.d("mydebug", "TetrisMatrix.removePieceFromMatrix " +
+                            (currentPiece.getOriginY() + y) + " " + (currentPiece.getOriginX() + x));
                     array[currentPiece.getOriginY() + y][currentPiece.getOriginX() + x] = currentPiece.getType();
+                }
             }
         }
     }
@@ -38,8 +52,9 @@ public class TetrisMatrix {
     private int[][] removePieceFromMatrix() {
         int[][] arrayWithoutPiece = new int[nbCellsY][nbCellsX];
         for (int y = 0; y < nbCellsY; y++) {
-            for (int x = 0; x < nbCellsX; x++)
-                arrayWithoutPiece[y][x] = array[y][x];
+            arrayWithoutPiece[y] = array[y].clone();
+            //for (int x = 0; x < nbCellsX; x++)
+            //    arrayWithoutPiece[y][x] = array[y][x];
         }
         for (int y = 0; y < currentPiece.getHeight(); y++) {
             for (int x = 0; x < currentPiece.getWidth(); x++) {
@@ -68,7 +83,7 @@ public class TetrisMatrix {
         p.setOriginY(0);
         currentPiece = p;
 
-        if (!isCollision(TetrisPiece.DIRECTION.NONE, array))
+        if (!isCollision(currentPiece, array))
             placePieceOnMatrix();
         else
             canAdd = false;
@@ -76,30 +91,18 @@ public class TetrisMatrix {
         return canAdd;
     }
 
-    private boolean isCollision(TetrisPiece.DIRECTION d, int[][] array) {
+    private boolean isCollision(TetrisPiece p, int[][] array) {
         boolean collision = false;
-        int newOriginX = currentPiece.getOriginX();
-        int newOriginY = currentPiece.getOriginY();
+        int newOriginX = p.getOriginX();
+        int newOriginY = p.getOriginY();
         int newX, newY;
+        //Log.d("mydebug", "TetrisMatrix.isCollision collision "+newOriginY);
 
-        // check if the piece will collide with another piece
-        switch(d){
-            case DOWN:
-                newOriginY += 1;
-                break;
-            case LEFT:
-                newOriginX -= 1;
-                break;
-            case RIGHT:
-                newOriginX += 1;
-                break;
-        }
-
-        for (int x = 0; x < currentPiece.getWidth(); x++) {
+        for (int x = 0; x < p.getWidth(); x++) {
             newX = newOriginX + x;
-            for (int y = 0; y < currentPiece.getHeight(); y++) {
+            for (int y = 0; y < p.getHeight(); y++) {
                 newY = newOriginY + y;
-                if (currentPiece.getShape()[y][x] == 1 &&
+                if (p.getShape()[y][x] == 1 &&
                         (newX < 0 || newX >= nbCellsX || newY >= nbCellsY || array[newY][newX] != 0)) {
                     collision = true;
                     break;
@@ -115,11 +118,25 @@ public class TetrisMatrix {
     public boolean movePiece(TetrisPiece.DIRECTION d) {
         boolean moved = false;
 
+        TetrisPiece p = currentPiece.clone();
+
+        switch(d){
+            case DOWN:
+                p.setOriginY(p.getOriginY() + 1);
+                break;
+            case LEFT:
+                p.setOriginX(p.getOriginX() - 1);
+                break;
+            case RIGHT:
+                p.setOriginX(p.getOriginX() + 1);
+                break;
+        }
+
         // remove the piece from its old position
         int[][] arrayWithoutPiece = removePieceFromMatrix();
 
         // do not move the piece if it collides with the game window or another piece
-        if (!isCollision(d, arrayWithoutPiece)) {
+        if (!isCollision(p, arrayWithoutPiece)) {
 
             array = arrayWithoutPiece.clone();
 
@@ -145,9 +162,15 @@ public class TetrisMatrix {
     }
 
     public void rotatePiece(TetrisPiece.DIRECTION d) {
-        removePieceFromMatrix();
-        currentPiece.rotate(d);
-        placePieceOnMatrix();
+        TetrisPiece p = currentPiece.clone();
+        p.rotate(d);
+        array = removePieceFromMatrix();
+        if (!isCollision(p, array)) {
+            //printMatrix(array);
+            //printMatrix(array);
+            currentPiece = p;
+            placePieceOnMatrix();
+        }
     }
 
     public int getNbCellsX() {

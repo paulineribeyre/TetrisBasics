@@ -53,19 +53,27 @@ public class TetrisPiece {
         }
     }
 
+    public TetrisPiece clone() {
+        TetrisPiece p = new TetrisPiece(type);
+        p.originX = originX;
+        p.originY = originY;
+        return p;
+    }
+
     public enum DIRECTION {
-        NONE,
+        //NONE,
         DOWN,
         LEFT,
-        RIGHT;
+        RIGHT
     }
 
     public void rotate(DIRECTION d) {
-        int[][] oldShape = shape.clone();
-        /*int[][] oldShape = new int[height][width];
+        //int[][] oldShape = shape.clone();
+        int[][] oldShape = new int[height][width];
         for (int y = 0; y < height; y++)
-            for (int x = 0; x < width; x++)
-                oldShape[y][x] = shape[y][x];*/
+            oldShape[y] = shape[y].clone();
+            //for (int x = 0; x < width; x++)
+            //    oldShape[y][x] = shape[y][x];
 
         int tmp = width;
         width = height;
