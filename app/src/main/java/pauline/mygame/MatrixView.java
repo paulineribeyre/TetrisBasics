@@ -102,7 +102,7 @@ public class MatrixView extends View {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) { // new game, or the current piece cannot drop anymore
-                if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // special case when the piece is moved after colliding
+                if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // case when the piece is moved after colliding
                     //refreshHandler.removeMessages(0);
                     refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
                 }

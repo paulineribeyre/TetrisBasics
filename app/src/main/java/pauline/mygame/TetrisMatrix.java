@@ -72,11 +72,12 @@ public class TetrisMatrix {
     public boolean addNewPiece() {
         boolean canAdd = true;
 
-        int[] arr = {1, 5};
-        int type = arr[new Random().nextInt(arr.length)]; // TODO remove
-        //type = 5;
+        //int[] arr = {1, 2, 3, 5};
+        //int type = arr[new Random().nextInt(arr.length)]; // TODO remove
+        //type = 3;
 
-        //int type = new Random().nextInt(8) + 1;
+        int type = new Random().nextInt(7) + 1;
+        //Log.d("mydebug", "addNewPiece "+type);
         TetrisPiece p = new TetrisPiece(type);
         p.setOriginX(nbCellsX / 2 - 1);
         p.setOriginY(0);
@@ -164,10 +165,11 @@ public class TetrisMatrix {
     public void rotatePiece(TetrisPiece.DIRECTION d) {
         TetrisPiece p = currentPiece.clone();
         p.rotate(d);
-        array = removePieceFromMatrix(currentPiece);
-        if (!isCollision(p, array)) {
+        int[][] arrayWithoutPiece = removePieceFromMatrix(currentPiece);
+        if (!isCollision(p, arrayWithoutPiece)) {
             //printMatrix(array);
             //printMatrix(array);
+            array = arrayWithoutPiece;
             currentPiece = p;
             placePieceOnMatrix();
         }

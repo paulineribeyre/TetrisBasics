@@ -25,15 +25,57 @@ public class TetrisPiece {
                 break;
 
             case 2: // I
+                width = 1;
+                height = 4;
+                shape = new int[height][width];
+                for (int y = 0; y < height; y++) {
+                    shape[y][0] = 1;
+                }
                 break;
 
             case 3: // T
+                width = 3;
+                height = 2;
+                shape = new int[height][width];
+                shape[0][1] = 1;
+                for (int x = 0; x < width; x++) {
+                    shape[1][x] = 1;
+                }
                 break;
 
-            case 4: // S
+            case 4: // L
+                width = 2;
+                height = 3;
+                shape = new int[height][width];
+                shape[height - 1][1] = 1;
+                for (int y = 0; y < height; y++) {
+                    shape[y][0] = 1;
+                }
                 break;
 
-            case 5: // Z
+            case 5: // J
+                width = 2;
+                height = 3;
+                shape = new int[height][width];
+                shape[height - 1][0] = 1;
+                for (int y = 0; y < height; y++) {
+                    shape[y][1] = 1;
+                }
+                break;
+
+            case 6: // S
+                width = 3;
+                height = 2;
+                shape = new int[height][width];
+                for (int y = 0; y < height; y++) {
+                    for (int x = 1 - y; x < width - y; x++) {
+                        shape[y][x] = 1;
+                    }
+                }
+                break;
+
+            case 7: // Z
+            default:
                 width = 3;
                 height = 2;
                 shape = new int[height][width];
@@ -44,12 +86,6 @@ public class TetrisPiece {
                 }
                 break;
 
-            case 6: // L
-                break;
-
-            case 7: // J
-            default:
-                break;
         }
     }
 
