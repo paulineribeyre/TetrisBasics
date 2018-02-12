@@ -2,7 +2,10 @@ package pauline.mygame;
 
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class TetrisMatrix {
@@ -37,6 +40,27 @@ public class TetrisMatrix {
         }
     }
 
+    public boolean addNewPiece() {
+        boolean canAdd = true;
+
+        //int[] arr = {1, 2, 3, 5};
+        //int type = arr[new Random().nextInt(arr.length)]; // TODO remove
+        //int type = 2;
+
+        int type = new Random().nextInt(7) + 1;
+        TetrisPiece p = new TetrisPiece(type);
+        p.setOriginX(nbCellsX / 2 - 1);
+        p.setOriginY(0);
+        currentPiece = p;
+
+        if (!isCollision(currentPiece, array))
+            placePieceOnMatrix();
+        else
+            canAdd = false;
+
+        return canAdd;
+    }
+
     private void placePieceOnMatrix() {
         for (int y = 0; y < currentPiece.getHeight(); y++) {
             for (int x = 0; x < currentPiece.getWidth(); x++) {
@@ -64,31 +88,34 @@ public class TetrisMatrix {
         return arrayWithoutPiece;
     }
 
-    // TODO
-    public void clearCells(int rowNumber, int numberOfRows) {
+    public int clearRows() {
+        int nbOfClearedRows = 0;
 
-    }
+        // check each row
+        int x;
+        boolean isCompleteRow;
+        for (int y = 0; y < nbCellsY; y++) {
 
-    public boolean addNewPiece() {
-        boolean canAdd = true;
+            // check if the row is complete
+            isCompleteRow = true;
+            for (x = 0; x < nbCellsX; x++) {
+                if (array[y][x] == 0) { // if there is a hole, the row is not complete
+                    isCompleteRow = false;
+                    break;
+                }
+            }
 
-        //int[] arr = {1, 2, 3, 5};
-        //int type = arr[new Random().nextInt(arr.length)]; // TODO remove
-        //type = 3;
+            // erase a complete row
+            if (x == nbCellsX && isCompleteRow) {
+                for (int h = y; h > 0; h--)
+                    array[h] = array[h - 1].clone();
+                Arrays.fill(array[0], 0);
+                y--;
+                nbOfClearedRows++;
+            }
+        }
 
-        int type = new Random().nextInt(7) + 1;
-        //Log.d("mydebug", "addNewPiece "+type);
-        TetrisPiece p = new TetrisPiece(type);
-        p.setOriginX(nbCellsX / 2 - 1);
-        p.setOriginY(0);
-        currentPiece = p;
-
-        if (!isCollision(currentPiece, array))
-            placePieceOnMatrix();
-        else
-            canAdd = false;
-
-        return canAdd;
+        return nbOfClearedRows;
     }
 
     private boolean isCollision(TetrisPiece p, int[][] array) {

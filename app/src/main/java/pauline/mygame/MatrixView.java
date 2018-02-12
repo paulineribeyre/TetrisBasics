@@ -106,13 +106,17 @@ public class MatrixView extends View {
                     //refreshHandler.removeMessages(0);
                     refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
                 }
-                else if (matrix.addNewPiece()) {
-                    MatrixView.this.invalidate(); // redraw
-                    //this.removeMessages(0);
-                    sendEmptyMessageDelayed(0, moveDelay);
+                else {
+                    int nbOfClearedRows = matrix.clearRows();
+                    if (nbOfClearedRows !=0) Log.d("mydebug", "MatrixView.RefreshHandler - cleared rows: " + nbOfClearedRows);
+                    if (matrix.addNewPiece()) {
+                        MatrixView.this.invalidate(); // redraw
+                        //this.removeMessages(0);
+                        sendEmptyMessageDelayed(0, moveDelay);
+                    }
+                    else
+                        Log.d("mydebug", "Game over");
                 }
-                else
-                    Log.d("mydebug", "Game over");
             }
 
             else {
