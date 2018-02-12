@@ -41,7 +41,7 @@ public class TetrisMatrix {
         for (int y = 0; y < currentPiece.getHeight(); y++) {
             for (int x = 0; x < currentPiece.getWidth(); x++) {
                 if (currentPiece.getShape()[y][x] == 1) {
-                    //Log.d("mydebug", "TetrisMatrix.removePieceFromMatrix " + (currentPiece.getOriginY() + y) + " " + (currentPiece.getOriginX() + x));
+                    //Log.d("mydebug", "TetrisMatrix.placePieceOnMatrix " + (currentPiece.getOriginY()) + " + " + y);
                     array[currentPiece.getOriginY() + y][currentPiece.getOriginX() + x] = currentPiece.getType();
                 }
             }
@@ -74,7 +74,7 @@ public class TetrisMatrix {
 
         int[] arr = {1, 5};
         int type = arr[new Random().nextInt(arr.length)]; // TODO remove
-        type = 5;
+        //type = 5;
 
         //int type = new Random().nextInt(8) + 1;
         TetrisPiece p = new TetrisPiece(type);
@@ -101,7 +101,7 @@ public class TetrisMatrix {
             newX = newOriginX + x;
             for (int y = 0; y < p.getHeight(); y++) {
                 newY = newOriginY + y;
-                //Log.d("mydebug", "TetrisMatrix.isCollision collision "+newY);
+                //Log.d("mydebug", "TetrisMatrix.isCollision collision "+newOriginY + " + "+ y);
                 if (p.getShape()[y][x] == 1 &&
                         (newX < 0 || newX >= nbCellsX || newY >= nbCellsY || array[newY][newX] != 0)) {
                     collision = true;

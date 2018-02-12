@@ -55,6 +55,14 @@ public class TetrisPiece {
 
     public TetrisPiece clone() {
         TetrisPiece p = new TetrisPiece(type);
+        p.width = width;
+        p.height = height;
+        p.shape = new int[height][width];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                p.shape[y][x] = shape[y][x];
+            }
+        }
         p.originX = originX;
         p.originY = originY;
         return p;
