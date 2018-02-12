@@ -105,7 +105,7 @@ public class TetrisMatrix {
                 }
             }
 
-            // erase a complete row
+            // clear a complete row
             if (x == nbCellsX && isCompleteRow) {
                 for (int h = y; h > 0; h--)
                     array[h] = array[h - 1].clone();

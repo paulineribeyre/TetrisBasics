@@ -1,5 +1,6 @@
 package pauline.mygame;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,12 +8,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -25,12 +30,30 @@ public class MatrixView extends View {
     private int sizeCellX, sizeCellY;
     private Bitmap[] cellArray;
 
-    private int moveDelay = 300; //1200;
+    private TextView levelTextView;
+
+    //private int moveDelay = 300; //1200;
+    private LevelHandler levelHandler = new LevelHandler();
     private RefreshHandler refreshHandler = new RefreshHandler();
 
     float initialX = 0; // X position of finger on initial touch
-    private int movementSensibilityX = 20;
-    private int touchDelay = 20;
+    private final int movementSensibilityX = 20;
+    private final int touchDelay = 20;
+
+    /*public MatrixView(Context context) {
+        this(context, null);
+    }
+
+    public MatrixView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public MatrixView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        matrix = new TetrisMatrix();
+        startGame();
+    }*/
 
     public MatrixView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -85,16 +108,22 @@ public class MatrixView extends View {
                 // cell.draw(canvas);
             }
         }
+
+        //TextView myTextView = (TextView) this.getParent().findViewById(R.id.level_text_view);
+        //myTextView.setText("Level " + levelHandler.getLevel());
+        if (levelTextView != null)
+            levelTextView.setText("Level " + levelHandler.getLevel());
+
     }
 
     private void moveGame() {
         if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
             //refreshHandler.removeMessages(0);
-            refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
+            refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
         }
         else { // the current piece cannot drop anymore
             //matrix.addNewPiece(1);
-            refreshHandler.sendEmptyMessageDelayed(1, moveDelay);
+            refreshHandler.sendEmptyMessageDelayed(1, levelHandler.getMoveDelay());
         }
     }
 
@@ -104,15 +133,16 @@ public class MatrixView extends View {
             if (msg.what == 1) { // new game, or the current piece cannot drop anymore
                 if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // case when the piece is moved after colliding
                     //refreshHandler.removeMessages(0);
-                    refreshHandler.sendEmptyMessageDelayed(0, moveDelay);
+                    refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
                 }
                 else {
-                    int nbOfClearedRows = matrix.clearRows();
-                    if (nbOfClearedRows !=0) Log.d("mydebug", "MatrixView.RefreshHandler - cleared rows: " + nbOfClearedRows);
+                    int nbOfClearedRows = matrix.clearRows(); // check if some rows are complete and clear them
+                    if (nbOfClearedRows != 0) levelHandler.addPoints(nbOfClearedRows);
+
                     if (matrix.addNewPiece()) {
                         MatrixView.this.invalidate(); // redraw
                         //this.removeMessages(0);
-                        sendEmptyMessageDelayed(0, moveDelay);
+                        sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
                     }
                     else
                         Log.d("mydebug", "Game over");
@@ -184,6 +214,10 @@ public class MatrixView extends View {
         }
 
         return true;
+    }
+
+    public void setLevelTextView(TextView levelTextView) {
+        this.levelTextView = levelTextView;
     }
 
 }
