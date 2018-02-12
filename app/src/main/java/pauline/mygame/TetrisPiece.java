@@ -95,9 +95,10 @@ public class TetrisPiece {
         p.height = height;
         p.shape = new int[height][width];
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+            p.shape[y] = shape[y].clone();
+            /*for (int x = 0; x < width; x++) {
                 p.shape[y][x] = shape[y][x];
-            }
+            }*/
         }
         p.originX = originX;
         p.originY = originY;
@@ -112,12 +113,9 @@ public class TetrisPiece {
     }
 
     public void rotate(DIRECTION d) {
-        //int[][] oldShape = shape.clone();
         int[][] oldShape = new int[height][width];
         for (int y = 0; y < height; y++)
             oldShape[y] = shape[y].clone();
-            //for (int x = 0; x < width; x++)
-            //    oldShape[y][x] = shape[y][x];
 
         int tmp = width;
         width = height;
@@ -126,7 +124,10 @@ public class TetrisPiece {
         shape = new int[height][width];
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
-                shape[y][x] = oldShape[x][y];
+                if (d == DIRECTION.LEFT)
+                    shape[y][x] = oldShape[width - x - 1][y];
+                else
+                    shape[y][x] = oldShape[x][height - y - 1];
     }
 
     public int getType() {
