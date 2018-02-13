@@ -37,6 +37,7 @@ public class MatrixView extends View {
     private RefreshHandler refreshHandler = new RefreshHandler();
 
     float initialX = 0; // X position of finger on initial touch
+    float initialY = 0; // X position of finger on initial touch
     private final int movementSensibilityX = 20;
     private final int touchDelay = 20;
 
@@ -140,7 +141,7 @@ public class MatrixView extends View {
                     if (nbOfClearedRows != 0) levelHandler.addPoints(nbOfClearedRows);
 
                     if (matrix.addNewPiece()) {
-                        MatrixView.this.invalidate(); // redraw
+                        //MatrixView.this.invalidate(); // redraw
                         //this.removeMessages(0);
                         sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
                     }
@@ -149,10 +150,12 @@ public class MatrixView extends View {
                 }
             }
 
-            else {
+            else if (msg.what == 0) {
                 moveGame(); //Log.d("mydebug", "MatrixView.RefreshHandler moving");
-                MatrixView.this.invalidate(); // redraw
+                //MatrixView.this.invalidate(); // redraw
             }
+
+            MatrixView.this.invalidate(); // redraw
         }
     }
 
@@ -167,6 +170,12 @@ public class MatrixView extends View {
             // initial touch
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 initialX = event.getRawX();
+                initialY = event.getRawY();
+
+                // touch at the bottom of the screen makes the piece drop faster
+                if (initialY > matrixHeight * 0.8) {
+                    levelHandler.dropFastSpeed();
+                }
             }
 
             // detect type of sliding movement
@@ -187,8 +196,13 @@ public class MatrixView extends View {
 
                 // simple touch: move on X axis
                 else {
-                    // TODO add touch at the bottom of the screen to drop piece fast
-                    if (initialX < matrixWidth / 2) { // move left
+                    // stop touch at the bottom of the screen makes the piece drop at normal speed again
+                    if (initialY > matrixHeight * 0.8) {
+                        levelHandler.dropNormalSpeed();
+                    }
+
+                    // horizontal movement
+                    else if (initialX < matrixWidth / 2) { // move left
                         //Log.d("mydebug", "MatrixView.onTouchEvent move left");
                         matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
                     } else { // move right
@@ -200,7 +214,7 @@ public class MatrixView extends View {
                         //Log.d("mydebug", "MatrixView.onTouchEvent C hasMessages");
                         //refreshHandler.removeMessages(1);
                     //}
-                    //refreshHandler.sendEmptyMessageDelayed(0, 400);
+                    refreshHandler.sendEmptyMessage(2);
                 }
 
 

@@ -16,6 +16,7 @@ public class TetrisActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tetris);
+
         TextView levelTextView = (TextView) findViewById(R.id.level_text_view);
         MatrixView matrixView = (MatrixView) findViewById(R.id.matrix_view);
         matrixView.setLevelTextView(levelTextView);
