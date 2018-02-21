@@ -7,8 +7,7 @@ public class LevelHandler {
     private int points = 0;
     private int level = 1;
     private int moveDelay = 800; //1200;
-
-    private int moveDelayBackUp;
+    private int moveDelayBackUp = moveDelay;
 
     private final int speedIncrease = 50;
     private final int minMoveDelay = 100;
@@ -23,12 +22,13 @@ public class LevelHandler {
 
     private void increaseLevel() {
         level++;
-        if (moveDelay - speedIncrease >= minMoveDelay)
+        if (moveDelay - speedIncrease >= minMoveDelay) {
             moveDelay -= speedIncrease;
+            moveDelayBackUp = moveDelay;
+        }
     }
 
     public void dropFastSpeed() {
-        moveDelayBackUp = moveDelay;
         moveDelay = 100;
     }
 

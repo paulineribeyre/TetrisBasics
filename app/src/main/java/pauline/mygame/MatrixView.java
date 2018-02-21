@@ -120,6 +120,7 @@ public class MatrixView extends View {
     private void moveGame() {
         if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
             //refreshHandler.removeMessages(0);
+            //levelHandler.dropNormalSpeed();
             refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
         }
         else { // the current piece cannot drop anymore
@@ -179,7 +180,7 @@ public class MatrixView extends View {
             }
 
             // detect type of sliding movement
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+            else if (event.getAction() == MotionEvent.ACTION_UP) {
                 float curX = event.getRawX();
                 float curY = event.getRawY();
 
@@ -197,12 +198,10 @@ public class MatrixView extends View {
                 // simple touch: move on X axis
                 else {
                     // stop touch at the bottom of the screen makes the piece drop at normal speed again
-                    if (initialY > matrixHeight * 0.8) {
-                        levelHandler.dropNormalSpeed();
-                    }
+                    levelHandler.dropNormalSpeed();
 
                     // horizontal movement
-                    else if (initialX < matrixWidth / 2) { // move left
+                    if (initialX < matrixWidth / 2) { // move left
                         //Log.d("mydebug", "MatrixView.onTouchEvent move left");
                         matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
                     } else { // move right
@@ -225,6 +224,12 @@ public class MatrixView extends View {
                 // redraw
                 //this.invalidate();
             }
+
+            /*if (event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
+                //levelHandler.dropNormalSpeed();
+                Log.d("mydebug", "MatrixView.onTouchEvent ACTION_HOVER_EXIT");
+            }*/
+
         }
 
         return true;
