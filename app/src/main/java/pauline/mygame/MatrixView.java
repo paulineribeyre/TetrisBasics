@@ -73,7 +73,17 @@ public class MatrixView extends View {
 
     public int getRandomColor(){
         Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        int r, g, b;
+        r = rnd.nextInt(256);
+        if (r > 150)
+            g = rnd.nextInt(150);
+        else
+            g = rnd.nextInt(256);
+        if (g > 150)
+            b = rnd.nextInt(150);
+        else
+            b = rnd.nextInt(256);
+        return Color.argb(255, r, g, b);
     }
 
     public void initColorArray() {
@@ -102,32 +112,52 @@ public class MatrixView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        // color of the empty cells
         Paint myPaint = new Paint();
-        // Drawable cell = getResources().getDrawable(R.drawable.cell); // use drawable image instead of rectangles
+        myPaint.setColor(colorArray[0]);
+
+        // color and picture of the cells containing a Tetris piece
+        int type;
+        Drawable cell = getResources().getDrawable(R.drawable.tetris_piece); // use drawable image instead of rectangles
 
         // draw the game matrix
         for (int y = 0; y <  matrix.getNbCellsY(); y ++) {
             for (int x = 0; x <  matrix.getNbCellsX(); x ++) {
-                myPaint.setColor(colorArray[matrix.getArray()[y][x]]);
-                canvas.drawRect(x * sizeCellX, y * sizeCellY,
-                        (x + 1) * sizeCellX, (y + 1) * sizeCellY,
-                        myPaint);
-                // cell.setColorFilter(colorArray[matrix.getArray()[y][x]], PorterDuff.Mode.MULTIPLY);
-                // cell.setBounds(y * sizeCellY, x * sizeCellX, (y + 1) * sizeCellY, (x + 1) * sizeCellX);
-                // cell.draw(canvas);
+
+                type = matrix.getArray()[y][x];
+
+                // empty cell
+                if (type == 0)
+                    canvas.drawRect(x * sizeCellX, y * sizeCellY,
+                            (x + 1) * sizeCellX, (y + 1) * sizeCellY,
+                            myPaint);
+
+                // cell containing a Tetris piece
+                else {
+                    cell.setColorFilter(colorArray[type], PorterDuff.Mode.MULTIPLY);
+                    cell.setBounds(x * sizeCellX, y * sizeCellY, (x + 1) * sizeCellX, (y + 1) * sizeCellY);
+                    cell.draw(canvas);
+                }
+
             }
         }
 
         // draw the next piece
         int x0 = matrix.getNbCellsX() + 1;
         int y0 = 5;
-        myPaint.setColor(colorArray[matrix.getNextPiece().getType()]);
+        type = matrix.getNextPiece().getType();
         for (int y = 0; y < matrix.getNextPiece().getHeight(); y++) {
             for (int x = 0; x < matrix.getNextPiece().getWidth(); x++) {
-                if (matrix.getNextPiece().getShape()[y][x] == 1)
-                    canvas.drawRect(x0 * sizeCellX + x * sizeCellX / 2, y0 * sizeCellY + y * sizeCellY / 2,
+                if (matrix.getNextPiece().getShape()[y][x] == 1) {
+                    /*canvas.drawRect(x0 * sizeCellX + x * sizeCellX / 2, y0 * sizeCellY + y * sizeCellY / 2,
                             x0 * sizeCellX + (x + 1) * sizeCellX / 2, y0 * sizeCellY + (y + 1) * sizeCellY / 2,
-                            myPaint);
+                            myPaint);*/
+                    cell.setColorFilter(colorArray[type], PorterDuff.Mode.MULTIPLY);
+                    cell.setBounds(x0 * sizeCellX + x * sizeCellX / 2, y0 * sizeCellY + y * sizeCellY / 2,
+                            x0 * sizeCellX + (x + 1) * sizeCellX / 2, y0 * sizeCellY + (y + 1) * sizeCellY / 2);
+                    cell.draw(canvas);
+                }
             }
         }
 

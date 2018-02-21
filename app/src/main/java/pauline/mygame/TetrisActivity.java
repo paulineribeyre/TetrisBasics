@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 // TODO list
-// display next shape
 // game over: replay or main menu
-// replace tiles with pictures
 // pause
 // save best score
 // save game
