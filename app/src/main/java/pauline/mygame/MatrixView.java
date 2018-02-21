@@ -23,12 +23,15 @@ import java.util.Random;
 
 public class MatrixView extends View {
 
+    private int screenWidth;
+    private int screenHeight;
+
     private TetrisMatrix matrix;
-    private int matrixWidth, matrixHeight;
+    //private int matrixWidth, matrixHeight;
 
     private int[] colorArray; // one color for each Tetris shape
     private int sizeCellX, sizeCellY;
-    private Bitmap[] cellArray;
+    //private Bitmap[] cellArray;
 
     private TextView levelTextView;
 
@@ -81,17 +84,19 @@ public class MatrixView extends View {
         }
     }
 
-    private void calculateCellSize(int screenWidth, int screenHeight) {
-        sizeCellX = (int)Math.floor(screenWidth / matrix.getNbCellsX());
+    private void calculateCellSize() {
+        sizeCellX = (int)Math.floor(screenWidth / (matrix.getNbCellsX() + 3));
         sizeCellY = (int)Math.floor(screenHeight / matrix.getNbCellsY());
         sizeCellX = sizeCellY = Math.min(sizeCellX, sizeCellY);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        calculateCellSize(w, h);
-        matrixWidth = sizeCellX * matrix.getNbCellsX();
-        matrixHeight = sizeCellY * matrix.getNbCellsY();
+        screenWidth = w;
+        screenHeight = h;
+        calculateCellSize();
+        //matrixWidth = sizeCellX * matrix.getNbCellsX();
+        //matrixHeight = sizeCellY * matrix.getNbCellsY();
     }
 
     @Override
@@ -100,13 +105,29 @@ public class MatrixView extends View {
         Paint myPaint = new Paint();
         // Drawable cell = getResources().getDrawable(R.drawable.cell); // use drawable image instead of rectangles
 
+        // draw the game matrix
         for (int y = 0; y <  matrix.getNbCellsY(); y ++) {
             for (int x = 0; x <  matrix.getNbCellsX(); x ++) {
                 myPaint.setColor(colorArray[matrix.getArray()[y][x]]);
-                canvas.drawRect(x * sizeCellX, y * sizeCellY, (x + 1) * sizeCellX, (y + 1) * sizeCellY, myPaint);
+                canvas.drawRect(x * sizeCellX, y * sizeCellY,
+                        (x + 1) * sizeCellX, (y + 1) * sizeCellY,
+                        myPaint);
                 // cell.setColorFilter(colorArray[matrix.getArray()[y][x]], PorterDuff.Mode.MULTIPLY);
                 // cell.setBounds(y * sizeCellY, x * sizeCellX, (y + 1) * sizeCellY, (x + 1) * sizeCellX);
                 // cell.draw(canvas);
+            }
+        }
+
+        // draw the next piece
+        int x0 = matrix.getNbCellsX() + 1;
+        int y0 = 5;
+        myPaint.setColor(colorArray[matrix.getNextPiece().getType()]);
+        for (int y = 0; y < matrix.getNextPiece().getHeight(); y++) {
+            for (int x = 0; x < matrix.getNextPiece().getWidth(); x++) {
+                if (matrix.getNextPiece().getShape()[y][x] == 1)
+                    canvas.drawRect(x0 * sizeCellX + x * sizeCellX / 2, y0 * sizeCellY + y * sizeCellY / 2,
+                            x0 * sizeCellX + (x + 1) * sizeCellX / 2, y0 * sizeCellY + (y + 1) * sizeCellY / 2,
+                            myPaint);
             }
         }
 
@@ -176,7 +197,7 @@ public class MatrixView extends View {
                 initialY = event.getRawY();
 
                 // touch at the bottom of the screen makes the piece drop faster
-                if (initialY > matrixHeight * 0.9) {
+                if (initialY > screenHeight * 0.8) {
                     levelHandler.dropFastSpeed();
                 }
                 /*else
@@ -209,7 +230,7 @@ public class MatrixView extends View {
                     //levelHandler.dropNormalSpeed();
 
                     // horizontal movement
-                    if (initialX < matrixWidth / 2) { // move left
+                    if (initialX < screenWidth / 2) { // move left
                         //Log.d("mydebug", "MatrixView.onTouchEvent move left");
                         matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
                     } else { // move right

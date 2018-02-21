@@ -230,4 +230,9 @@ public class TetrisMatrix {
     public TetrisPiece getCurrentPiece() {
         return currentPiece;
     }
+
+    public TetrisPiece getNextPiece() {
+        return nextPiece;
+    }
+
 }
