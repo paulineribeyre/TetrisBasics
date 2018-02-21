@@ -13,6 +13,7 @@ public class TetrisMatrix {
     private int nbCellsX, nbCellsY; // width and height of the game window
     private int[][] array;
     private TetrisPiece currentPiece;
+    private TetrisPiece nextPiece;
 
     public TetrisMatrix(int height, int width) {
         nbCellsX = width;
@@ -22,6 +23,7 @@ public class TetrisMatrix {
             Arrays.fill(array[y], 0);
         }
 
+        nextPiece = createNewPiece();
         //addNewPiece();
     }
 
@@ -40,6 +42,15 @@ public class TetrisMatrix {
         }
     }
 
+    // create a new piece at random
+    private TetrisPiece createNewPiece() {
+        int type = new Random().nextInt(7) + 1;
+        TetrisPiece p = new TetrisPiece(type);
+        p.setOriginX(nbCellsX / 2 - 1);
+        p.setOriginY(0);
+        return p;
+    }
+
     public boolean addNewPiece() {
         boolean canAdd = true;
 
@@ -47,14 +58,12 @@ public class TetrisMatrix {
         //int type = arr[new Random().nextInt(arr.length)]; // TODO remove
         //int type = 2;
 
-        int type = new Random().nextInt(7) + 1;
-        TetrisPiece p = new TetrisPiece(type);
-        p.setOriginX(nbCellsX / 2 - 1);
-        p.setOriginY(0);
-        currentPiece = p;
+        currentPiece = nextPiece;
 
-        if (!isCollision(currentPiece, array))
+        if (!isCollision(currentPiece, array)) {
             placePieceOnMatrix();
+            nextPiece = createNewPiece();
+        }
         else
             canAdd = false;
 

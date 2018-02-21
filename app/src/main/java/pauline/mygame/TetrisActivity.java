@@ -10,6 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+// TODO list
+// display next shape
+// game over: replay or main menu
+// replace tiles with pictures
+// pause
+// save best score
+// save game
+// options (color) and save
+// music
+// google play
+// app icon
+// app name
+
 public class TetrisActivity extends Activity {
 
     @Override
