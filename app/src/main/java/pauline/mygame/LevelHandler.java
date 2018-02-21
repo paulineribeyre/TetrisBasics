@@ -7,7 +7,10 @@ public class LevelHandler {
     private int points = 0;
     private int level = 1;
     private int moveDelay = 800; //1200;
-    private int moveDelayBackUp = moveDelay;
+
+    public boolean isFast = false;
+    private int fastMoveDelay = 100; //1200;
+    //private int moveDelayBackUp = moveDelay;
 
     private final int speedIncrease = 50;
     private final int minMoveDelay = 100;
@@ -24,16 +27,18 @@ public class LevelHandler {
         level++;
         if (moveDelay - speedIncrease >= minMoveDelay) {
             moveDelay -= speedIncrease;
-            moveDelayBackUp = moveDelay;
+            //moveDelayBackUp = moveDelay;
         }
     }
 
     public void dropFastSpeed() {
-        moveDelay = 100;
+        //moveDelay = 100;
+        isFast = true;
     }
 
     public void dropNormalSpeed() {
-        moveDelay = moveDelayBackUp;
+        //moveDelay = moveDelayBackUp;
+        isFast = false;
     }
 
     public int getLevel() {
@@ -41,7 +46,7 @@ public class LevelHandler {
     }
 
     public int getMoveDelay() {
-        return moveDelay;
+        return isFast ? fastMoveDelay : moveDelay;
     }
 
 }

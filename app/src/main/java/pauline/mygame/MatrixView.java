@@ -168,15 +168,19 @@ public class MatrixView extends View {
 
         synchronized (event) { // prevents touchscreen events from flooding the main thread
 
+            //levelHandler.dropNormalSpeed();
+
             // initial touch
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 initialX = event.getRawX();
                 initialY = event.getRawY();
 
                 // touch at the bottom of the screen makes the piece drop faster
-                if (initialY > matrixHeight * 0.8) {
+                if (initialY > matrixHeight * 0.9) {
                     levelHandler.dropFastSpeed();
                 }
+                /*else
+                    levelHandler.dropNormalSpeed();*/
             }
 
             // detect type of sliding movement
@@ -184,8 +188,12 @@ public class MatrixView extends View {
                 float curX = event.getRawX();
                 float curY = event.getRawY();
 
+                // stop touch at the bottom of the screen makes the piece drop at normal speed again
+                if (levelHandler.isFast)
+                    levelHandler.dropNormalSpeed();
+
                 // X movement: rotation
-                if (Math.abs(initialX - curX) >= movementSensibilityX) {
+                else if (Math.abs(initialX - curX) >= movementSensibilityX) {
                     if (initialX > curX) { // rotate left
                         //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
                         matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
@@ -198,7 +206,7 @@ public class MatrixView extends View {
                 // simple touch: move on X axis
                 else {
                     // stop touch at the bottom of the screen makes the piece drop at normal speed again
-                    levelHandler.dropNormalSpeed();
+                    //levelHandler.dropNormalSpeed();
 
                     // horizontal movement
                     if (initialX < matrixWidth / 2) { // move left
