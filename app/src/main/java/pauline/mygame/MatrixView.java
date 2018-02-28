@@ -71,7 +71,7 @@ public class MatrixView extends View {
         refreshHandler.sendEmptyMessage(1); // start the game
     }
 
-    public int getRandomColor(){
+    public int getRandomColor(){ // TODO nicer colors
         Random rnd = new Random();
         int r, g, b;
         r = rnd.nextInt(256);
@@ -121,6 +121,8 @@ public class MatrixView extends View {
         int type;
         Drawable cell = getResources().getDrawable(R.drawable.tetris_piece); // use drawable image instead of rectangles
 
+        int yOrigin = screenHeight - sizeCellY * matrix.getNbCellsY();
+
         // draw the game matrix
         for (int y = 0; y <  matrix.getNbCellsY(); y ++) {
             for (int x = 0; x <  matrix.getNbCellsX(); x ++) {
@@ -129,14 +131,15 @@ public class MatrixView extends View {
 
                 // empty cell
                 if (type == 0)
-                    canvas.drawRect(x * sizeCellX, y * sizeCellY,
-                            (x + 1) * sizeCellX, (y + 1) * sizeCellY,
+                    canvas.drawRect(x * sizeCellX, yOrigin + y * sizeCellY,
+                            (x + 1) * sizeCellX, yOrigin + (y + 1) * sizeCellY,
                             myPaint);
 
                 // cell containing a Tetris piece
                 else {
                     cell.setColorFilter(colorArray[type], PorterDuff.Mode.MULTIPLY);
-                    cell.setBounds(x * sizeCellX, y * sizeCellY, (x + 1) * sizeCellX, (y + 1) * sizeCellY);
+                    cell.setBounds(x * sizeCellX, yOrigin + y * sizeCellY,
+                            (x + 1) * sizeCellX, yOrigin + (y + 1) * sizeCellY);
                     cell.draw(canvas);
                 }
 
@@ -164,7 +167,7 @@ public class MatrixView extends View {
         //TextView myTextView = (TextView) this.getParent().findViewById(R.id.level_text_view);
         //myTextView.setText("Level " + levelHandler.getLevel());
         if (levelTextView != null)
-            levelTextView.setText("Level " + levelHandler.getLevel());
+            levelTextView.setText("Level " + levelHandler.getLevel() + " (Points: " + levelHandler.points + ")");
 
     }
 
@@ -227,7 +230,7 @@ public class MatrixView extends View {
                 initialY = event.getRawY();
 
                 // touch at the bottom of the screen makes the piece drop faster
-                if (initialY > screenHeight * 0.8) {
+                if (initialY > screenHeight * 0.9) {
                     levelHandler.dropFastSpeed();
                 }
                 /*else

@@ -18,8 +18,7 @@ import android.widget.TextView;
 // options (color) and save
 // music
 // google play
-// app icon
-// app name
+// switch rotate/move commands in options
 
 public class TetrisActivity extends Activity {
 

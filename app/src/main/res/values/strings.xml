@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">MyTetris</string>
+    <string name="app_name">Tetris Basics</string>
     <string name="button_play_str">Play</string>
+    <string name="button_settings_str">Settings</string>
 </resources>

@@ -12,7 +12,8 @@
     <pauline.mygame.MatrixView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/matrix_view" >
+        android:id="@+id/matrix_view"
+        android:background="@drawable/background_repeat">
     <!--android:background="@drawable/border"-->
 </pauline.mygame.MatrixView>
 
@@ -20,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/level_text_view"
-        android:editable="true" />
+        android:editable="true"
+        android:textColor="#000000" />
 
 </RelativeLayout>
