@@ -13,6 +13,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/linearLayout"
+        android:baselineAligned="false"
         android:background="@drawable/background_repeat">
 
         <ImageView
@@ -31,24 +33,37 @@
             android:onClick="openGame"
             android:background="#00ffffff" />
 
-        <!--<Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_play_str"
-            android:id="@+id/play_button"
-            android:layout_gravity="center_horizontal"
-            android:background="#d8f1f4"
-            android:onClick="openGame"
-            android:padding="@dimen/abc_text_size_button_material" />-->
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_settings_str"
             android:id="@+id/settings_button"
             android:layout_gravity="center_horizontal"
-            android:onClick="openGame"
+            android:onClick="openSettings"
             android:padding="@dimen/abc_text_size_button_material" />
 
+        <ImageView
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/background_imageView"
+            android:src="@drawable/main_menu_background"
+            android:layout_gravity="bottom" />
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:adjustViewBounds="true"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:src="@drawable/main_menu_background"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
 </RelativeLayout>

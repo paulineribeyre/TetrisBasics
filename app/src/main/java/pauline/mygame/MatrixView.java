@@ -40,8 +40,8 @@ public class MatrixView extends View {
     private RefreshHandler refreshHandler = new RefreshHandler();
 
     float initialX = 0; // X position of finger on initial touch
-    float initialY = 0; // X position of finger on initial touch
-    private final int movementSensibilityX = 20;
+    float initialY = 0; // Y position of finger on initial touch
+    private final int movementSensibilityX = 30;
     private final int touchDelay = 20;
 
     /*public MatrixView(Context context) {
@@ -248,12 +248,12 @@ public class MatrixView extends View {
 
                 // X movement: rotation
                 else if (Math.abs(initialX - curX) >= movementSensibilityX) {
-                    if (initialX > curX) { // rotate left
-                        //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
-                        matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
-                    } else { // rotate right
+                    if (initialX > curX) { // rotate right
                         //Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
                         matrix.rotatePiece(TetrisPiece.DIRECTION.RIGHT);
+                    } else { // rotate left
+                        //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
+                        matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
                     }
                 }
 

@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".TetrisActivity">
         </activity>
+        <activity android:name=".SettingsActivity">
+        </activity>
     </application>
 
 </manifest>

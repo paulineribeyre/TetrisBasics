@@ -15,10 +15,12 @@ import android.widget.TextView;
 // pause
 // save best score
 // save game
-// options (color) and save
+// save settings (color)
 // music
 // google play
 // switch rotate/move commands in options
+// settings erase best score
+// settings default
 
 public class TetrisActivity extends Activity {
 
