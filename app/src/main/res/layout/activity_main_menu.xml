@@ -42,14 +42,6 @@
             android:onClick="openSettings"
             android:padding="@dimen/abc_text_size_button_material" />
 
-        <ImageView
-            android:adjustViewBounds="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/background_imageView"
-            android:src="@drawable/main_menu_background"
-            android:layout_gravity="bottom" />
-
     </LinearLayout>
 
     <RelativeLayout

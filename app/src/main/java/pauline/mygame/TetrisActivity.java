@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 // TODO list
+// photoshop: title i, play button
 // game over: replay or main menu
 // pause
 // save best score
