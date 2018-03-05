@@ -23,6 +23,8 @@ import java.util.Random;
 
 public class MatrixView extends View {
 
+    private User user;
+
     private int screenWidth;
     private int screenHeight;
 
@@ -42,22 +44,7 @@ public class MatrixView extends View {
     float initialX = 0; // X position of finger on initial touch
     float initialY = 0; // Y position of finger on initial touch
     private final int movementSensibilityX = 30;
-    private final int touchDelay = 20;
-
-    /*public MatrixView(Context context) {
-        this(context, null);
-    }
-
-    public MatrixView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public MatrixView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-
-        matrix = new TetrisMatrix();
-        startGame();
-    }*/
+    //private final int touchDelay = 20;
 
     public MatrixView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -87,6 +74,7 @@ public class MatrixView extends View {
     }
 
     public void initColorArray() {
+        Log.d("mydebug", "User useRandomColors = " + User.useRandomColors);
         colorArray = new int[8];
         colorArray[0] = Color.WHITE;
         for (int i = 1; i < 8; i++) {
@@ -301,4 +289,7 @@ public class MatrixView extends View {
         this.levelTextView = levelTextView;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

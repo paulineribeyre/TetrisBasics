@@ -13,34 +13,52 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/linearLayout"
-        android:baselineAligned="false"
-        android:background="@drawable/background_repeat">
+        android:baselineAligned="false">
+    <!--android:background="@drawable/background_repeat">-->
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/title_imageView"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/title" />
+            android:padding="20dp"
+            android:src="@drawable/title"/>
 
-        <ImageButton
+        <!--<ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/play"
             android:onClick="openGame"
-            android:background="#00ffffff" />
+            android:background="#00ffffff" />-->
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="@string/button_play_str"
+            android:id="@+id/play_button"
+            android:layout_gravity="center_horizontal"
+            android:onClick="openGame"
+            android:textColor="#ffffff"
+            android:background="@drawable/button_bottom_border" />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:text="@string/button_settings_str"
             android:id="@+id/settings_button"
             android:layout_gravity="center_horizontal"
             android:onClick="openSettings"
-            android:padding="@dimen/abc_text_size_button_material" />
+            android:textColor="#ffffff"
+            android:background="@drawable/button_bottom_border" />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:text="@string/button_exit_str"
+            android:id="@+id/exit_button"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffffff"
+            android:background="#00ffffff" />
 
     </LinearLayout>
 
@@ -50,10 +68,8 @@
 
         <ImageView
             android:adjustViewBounds="true"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:src="@drawable/main_menu_background"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>

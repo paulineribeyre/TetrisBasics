@@ -11,7 +11,6 @@ public class MainMenuActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle("My Game :-)");
         setContentView(R.layout.activity_main_menu);
     }
 

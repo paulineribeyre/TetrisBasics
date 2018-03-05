@@ -5,22 +5,25 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 // TODO list
-// photoshop: title i, play button
-// game over: replay or main menu
+// photoshop: title i
+// game over: replay or main menu (pop_up?)
 // pause
+// new game
 // save best score
 // save game
-// save settings (color)
-// music
+// music (+ add mute/volume in settings)
+// noises
 // google play
-// switch rotate/move commands in options
-// settings erase best score
+// settings switch rotate/move commands
+// settings erase best score button
+// settings matrix size
 // settings default
 
 public class TetrisActivity extends Activity {
