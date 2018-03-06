@@ -7,6 +7,7 @@ public class TetrisPiece implements Serializable {
     private int type;
     private int width, height;
     private int[][] shape;
+    private int color;
 
     private int originX, originY;
 
@@ -162,6 +163,10 @@ public class TetrisPiece implements Serializable {
 
     public void setOriginY(int originY) {
         this.originY = originY;
+    }
+
+    public int getColor() {
+        return color;
     }
 
 }

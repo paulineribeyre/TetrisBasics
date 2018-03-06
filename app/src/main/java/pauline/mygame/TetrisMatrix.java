@@ -17,8 +17,8 @@ public class TetrisMatrix implements Serializable {
     private TetrisPiece nextPiece;
 
     public TetrisMatrix(int height, int width) {
-        nbCellsX = width;
         nbCellsY = height;
+        nbCellsX = width;
         array = new int[nbCellsY][nbCellsX];
         for (int y = 0; y < nbCellsY; y ++) {
             Arrays.fill(array[y], 0);
@@ -29,7 +29,8 @@ public class TetrisMatrix implements Serializable {
     }
 
     public TetrisMatrix() {
-        this(20, 10);
+        //this(20, 10);
+        this(User.nbCellsY, User.nbCellsX);
     }
 
     public void printMatrix(int[][] array) { // TODO remove

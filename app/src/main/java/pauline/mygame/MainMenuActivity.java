@@ -29,6 +29,7 @@ public class MainMenuActivity extends MyActivity {
         setContentView(R.layout.activity_main_menu);
 
         // Load the saved game
+        new User(); // so that the constructor function is called
         loadGame();
 
         TextView titleTextView = (TextView) findViewById(R.id.title_text_view);

@@ -22,9 +22,7 @@ import android.widget.TextView;
 // noises
 // google play
 // settings switch rotate/move commands
-// settings erase best score button
 // settings matrix size
-// settings default
 // keep moving when hold left or right
 // fonts license reference
 

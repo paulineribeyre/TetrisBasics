@@ -58,7 +58,6 @@ public class MyActivity extends Activity {
             fis = new FileInputStream (new File(this.getExternalFilesDir(null) + "/" + saveFileName));
             ObjectInputStream is = new ObjectInputStream(fis);
             user = (SerializableUser) is.readObject();
-            Log.d("mydebug", "loadGame() - best score: " + user.bestScore);
             is.close();
             fis.close();
             loaded = true;
@@ -67,7 +66,7 @@ public class MyActivity extends Activity {
         }
 
         User.bestScore = user.bestScore;
-        User.currentGame = user.currentGame;
+        //User.currentGame = user.currentGame;
         User.useRandomColors = user.useRandomColors;
         User.touchToMove = user.touchToMove;
         User.nbCellsX = user.nbCellsX;

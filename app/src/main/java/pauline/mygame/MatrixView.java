@@ -51,33 +51,50 @@ public class MatrixView extends View {
     }
 
     private void startGame() {
-        matrix = new TetrisMatrix();
+        matrix = User.currentGame; // new TetrisMatrix();
         levelHandler = new LevelHandler();
         initColorArray();
         refreshHandler.sendEmptyMessage(1); // start the game
     }
 
-    public int getRandomColor(){ // TODO nicer colors
+    private void startNewGame() {
+        User.currentGame = new TetrisMatrix();
+        startGame();
+    }
+
+    public int getRandomColor(){
+
         Random rnd = new Random();
         int r, g, b;
-        r = rnd.nextInt(256);
-        if (r > 150)
-            g = rnd.nextInt(150);
-        else
+        double luminance = 0;
+
+        do {
+            r = rnd.nextInt(256);
             g = rnd.nextInt(256);
-        if (g > 150)
-            b = rnd.nextInt(150);
-        else
             b = rnd.nextInt(256);
+            /*if (r > 150)
+                g = rnd.nextInt(150);
+            else
+                g = rnd.nextInt(256);
+            if (g > 150)
+                b = rnd.nextInt(150);
+            else
+                b = rnd.nextInt(256);*/
+            luminance = r * 0.2126 + g * 0.7152 + b * 0.0722;
+        } while (luminance < 80);
+
         return Color.argb(255, r, g, b);
+
     }
 
     public void initColorArray() {
-        Log.d("mydebug", "User useRandomColors = " + User.useRandomColors);
         colorArray = new int[8];
-        colorArray[0] = Color.WHITE;
+        colorArray[0] = Color.WHITE; // Game matrix background
         for (int i = 1; i < 8; i++) {
-            colorArray[i] = getRandomColor();
+            if (User.useRandomColors)
+                colorArray[i] = getRandomColor();
+            else
+                colorArray[i] = new TetrisPiece(i).getColor();
         }
     }
 
@@ -192,7 +209,7 @@ public class MatrixView extends View {
                     else {
                         Log.d("mydebug", "Game over");
                         //User.bestScore = levelHandler.getScore();
-                        startGame();
+                        startNewGame();
                     }
                 }
             }
