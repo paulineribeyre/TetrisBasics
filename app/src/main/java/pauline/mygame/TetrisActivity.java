@@ -17,8 +17,6 @@ import android.widget.TextView;
 // pause
 // new game
 // explain controls
-// save best score
-// display bast score on main menu
 // save game
 // music (+ add mute/volume in settings)
 // noises
@@ -28,6 +26,7 @@ import android.widget.TextView;
 // settings matrix size
 // settings default
 // keep moving when hold left or right
+// fonts license reference
 
 public class TetrisActivity extends MyActivity {
 

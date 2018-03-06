@@ -2,13 +2,14 @@ package pauline.mygame;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class TetrisMatrix {
+public class TetrisMatrix implements Serializable {
 
     private int nbCellsX, nbCellsY; // width and height of the game window
     private int[][] array;

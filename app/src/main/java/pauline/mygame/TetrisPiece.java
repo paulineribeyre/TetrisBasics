@@ -1,6 +1,8 @@
 package pauline.mygame;
 
-public class TetrisPiece {
+import java.io.Serializable;
+
+public class TetrisPiece implements Serializable {
 
     private int type;
     private int width, height;

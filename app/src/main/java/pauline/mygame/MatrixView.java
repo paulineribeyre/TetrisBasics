@@ -23,8 +23,6 @@ import java.util.Random;
 
 public class MatrixView extends View {
 
-    private User user;
-
     private int screenWidth;
     private int screenHeight;
 
@@ -297,10 +295,6 @@ public class MatrixView extends View {
 
     public void setPointsTextView(TextView pointsTextView) {
         this.pointsTextView = pointsTextView;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 }
