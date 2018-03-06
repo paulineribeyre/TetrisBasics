@@ -24,7 +24,7 @@ public class LevelHandler {
 
         this.points += 2 * toAdd;
 
-        if (this.points % 10 == 0) {
+        if (this.points >= level * 10) {
             Log.d("mydebug", "Level " + level);
             increaseLevel();
         }

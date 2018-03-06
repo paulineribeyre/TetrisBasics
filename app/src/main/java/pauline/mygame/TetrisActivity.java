@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 // TODO list
-// photoshop: title i
 // game over: replay or main menu (pop_up?)
 // pause
 // new game

@@ -30,7 +30,7 @@
             android:id="@+id/points_text_view"
             android:text="(points)"
             android:editable="true"
-            android:textColor="#ff0000"
+            android:textColor="#ffffff"
             android:textSize="25dp" />
 
         </LinearLayout>
