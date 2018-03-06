@@ -2,6 +2,7 @@ package pauline.mygame;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -33,8 +34,14 @@ public class TetrisActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tetris);
 
+        TextView pointsTextView = (TextView) findViewById(R.id.points_text_view);
+        pointsTextView.setTypeface(Typefaces.get(this,"BAUHS93.TTF"));
+
         TextView levelTextView = (TextView) findViewById(R.id.level_text_view);
+        levelTextView.setTypeface(Typefaces.get(this, "BAUHS93.TTF"));
+
         MatrixView matrixView = (MatrixView) findViewById(R.id.matrix_view);
+        matrixView.setPointsTextView(pointsTextView);
         matrixView.setLevelTextView(levelTextView);
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainMenuActivity extends Activity {
 
@@ -12,6 +13,12 @@ public class MainMenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
+        titleTextView.setTypeface(Typefaces.get(this, "blocked.ttf"));
+
+        TextView subtitleTextView = (TextView) findViewById(R.id.subtitle_text_view);
+        subtitleTextView.setTypeface(Typefaces.get(this, "ITCKRIST.TTF"));
     }
 
     public void openGame(View view) {

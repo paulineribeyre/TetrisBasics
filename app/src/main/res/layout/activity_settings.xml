@@ -10,28 +10,63 @@
     tools:context="pauline.mygame.SettingsActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/title" />
+            android:id="@+id/title_text_view"
+            android:text="Tetris"
+            android:editable="true"
+            android:textColor="#ffffff"
+            android:textSize="40dp"
+            android:paddingTop="25dp"/>
 
-        <TableLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/subtitle_text_view"
+            android:text="basics"
+            android:editable="true"
+            android:textColor="#ffffff"
+            android:textSize="30dp"
+            android:paddingBottom="25dp"/>
+
+        <!-- Settings -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
-            <TableRow>
+            <!-- Column 1 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="@string/settings_random_colors"
                     android:checked="true"
-                    android:padding="15px" />
+                    android:padding="15px"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="right" />
+
+            </LinearLayout>
+
+            <!-- Column 2 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
                 <ToggleButton
                     android:layout_width="wrap_content"
@@ -39,20 +74,11 @@
                     android:id="@+id/settings_random_colors_toggleButton"
                     style="@android:style/Widget.Holo.Button.Toggle"
                     android:text="@string/settings_random_colors"
-                    android:background="#00ffffff" />
-
-            </TableRow>
-
-        </TableLayout>
-
-        <!--<Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_ok_str"
-            android:id="@+id/ok_button"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#ffffff"
-            android:background="#00ffffff" />-->
+                    android:background="#00ffffff"
+                    android:layout_gravity="left" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
+
 </RelativeLayout>

@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class LevelHandler {
 
-    public float points = 0;
+    private int points = 0;
     private int level = 1;
     private int moveDelay = 800; //1200;
 
@@ -16,12 +16,15 @@ public class LevelHandler {
     private final int minMoveDelay = 100;
 
     public void addPoints(int points) {
-        this.points += points;
+
+        float toAdd = points;
 
         // bonus points for clearing more than one row at a time
-        this.points += points == 1 ? 0 : (points == 2 ? 0.5 : (points == 3 ? 1.5 : 2.5));
+        toAdd += points == 1 ? 0 : (points == 2 ? 0.5 : (points == 3 ? 1.5 : 2.5));
 
-        if (this.points % (5 * level) == 0) {
+        this.points += 2 * toAdd;
+
+        if (this.points % 10 == 0) {
             Log.d("mydebug", "Level " + level);
             increaseLevel();
         }
@@ -47,6 +50,10 @@ public class LevelHandler {
 
     public int getLevel() {
         return level;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     public int getMoveDelay() {

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class SettingsActivity extends Activity {
@@ -14,6 +15,12 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
+        titleTextView.setTypeface(Typefaces.get(this, "blocked.ttf"));
+
+        TextView subtitleTextView = (TextView) findViewById(R.id.subtitle_text_view);
+        subtitleTextView.setTypeface(Typefaces.get(this, "ITCKRIST.TTF"));
 
         ToggleButton toggle = (ToggleButton) findViewById(R.id.settings_random_colors_toggleButton);
         toggle.setChecked(User.useRandomColors);

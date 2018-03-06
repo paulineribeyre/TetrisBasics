@@ -36,6 +36,7 @@ public class MatrixView extends View {
     //private Bitmap[] cellArray;
 
     private TextView levelTextView;
+    private TextView pointsTextView;
 
     //private int moveDelay = 300; //1200;
     private LevelHandler levelHandler = new LevelHandler();
@@ -154,8 +155,10 @@ public class MatrixView extends View {
 
         //TextView myTextView = (TextView) this.getParent().findViewById(R.id.level_text_view);
         //myTextView.setText("Level " + levelHandler.getLevel());
-        if (levelTextView != null)
-            levelTextView.setText("Level " + levelHandler.getLevel() + " (Points: " + levelHandler.points + ")");
+        if (levelTextView != null) {
+            levelTextView.setText("LEVEL " + levelHandler.getLevel());
+            pointsTextView.setText("SCORE: " + levelHandler.getPoints());
+        }
 
     }
 
@@ -287,6 +290,10 @@ public class MatrixView extends View {
 
     public void setLevelTextView(TextView levelTextView) {
         this.levelTextView = levelTextView;
+    }
+
+    public void setPointsTextView(TextView pointsTextView) {
+        this.pointsTextView = pointsTextView;
     }
 
     public void setUser(User user) {

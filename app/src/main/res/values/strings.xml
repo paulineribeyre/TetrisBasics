@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Tetris Basics</string>
+    <string name="title">Tetris</string>
+    <string name="subtitle">basics</string>
     <string name="button_play_str">Play</string>
     <string name="button_settings_str">Settings</string>
     <string name="button_exit_str">Exit</string>
