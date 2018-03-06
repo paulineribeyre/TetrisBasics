@@ -4,16 +4,29 @@ import android.util.Log;
 
 public class LevelHandler {
 
-    private int points = 0;
-    private int level = 1;
-    private int moveDelay = 800; //1200;
+    private int score;
+    private int level;
+    private int moveDelay;
 
-    public boolean isFast = false;
-    private int fastMoveDelay = 100; //1200;
-    //private int moveDelayBackUp = moveDelay;
+    public boolean isFast;
+    private int fastMoveDelay;
 
-    private final int speedIncrease = 50;
-    private final int minMoveDelay = 100;
+    private final int speedIncrease;
+    private final int minMoveDelay;
+
+    public LevelHandler() {
+
+        score = 0;
+        level = 1;
+        moveDelay = 800; //1200;
+
+        isFast = false;
+        fastMoveDelay = 100;
+
+        speedIncrease = 50;
+        minMoveDelay = 100;
+
+    }
 
     public void addPoints(int points) {
 
@@ -22,12 +35,16 @@ public class LevelHandler {
         // bonus points for clearing more than one row at a time
         toAdd += points == 1 ? 0 : (points == 2 ? 0.5 : (points == 3 ? 1.5 : 2.5));
 
-        this.points += 2 * toAdd;
+        score += 2 * toAdd;
 
-        if (this.points >= level * 10) {
+        if (score >= level * 15) {
             Log.d("mydebug", "Level " + level);
             increaseLevel();
         }
+
+        if (score > User.bestScore)
+            User.bestScore = score;
+
     }
 
     private void increaseLevel() {
@@ -52,8 +69,8 @@ public class LevelHandler {
         return level;
     }
 
-    public int getPoints() {
-        return points;
+    public int getScore() {
+        return score;
     }
 
     public int getMoveDelay() {

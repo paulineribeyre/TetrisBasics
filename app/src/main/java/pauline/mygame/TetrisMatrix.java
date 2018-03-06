@@ -147,7 +147,7 @@ public class TetrisMatrix {
             }
         }
 
-        if (collision) Log.d("mydebug", "TetrisMatrix.isCollision collision");
+        //if (collision) Log.d("mydebug", "TetrisMatrix.isCollision collision");
 
         return collision;
     }

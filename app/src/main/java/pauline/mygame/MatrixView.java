@@ -39,7 +39,7 @@ public class MatrixView extends View {
     private TextView pointsTextView;
 
     //private int moveDelay = 300; //1200;
-    private LevelHandler levelHandler = new LevelHandler();
+    private LevelHandler levelHandler;
     private RefreshHandler refreshHandler = new RefreshHandler();
 
     float initialX = 0; // X position of finger on initial touch
@@ -49,12 +49,12 @@ public class MatrixView extends View {
 
     public MatrixView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        matrix = new TetrisMatrix();
-
         startGame();
     }
 
     private void startGame() {
+        matrix = new TetrisMatrix();
+        levelHandler = new LevelHandler();
         initColorArray();
         refreshHandler.sendEmptyMessage(1); // start the game
     }
@@ -156,8 +156,8 @@ public class MatrixView extends View {
         //TextView myTextView = (TextView) this.getParent().findViewById(R.id.level_text_view);
         //myTextView.setText("Level " + levelHandler.getLevel());
         if (levelTextView != null) {
+            pointsTextView.setText("SCORE: " + levelHandler.getScore() + "(best: " + User.bestScore + ")");
             levelTextView.setText("LEVEL " + levelHandler.getLevel());
-            pointsTextView.setText("SCORE: " + levelHandler.getPoints());
         }
 
     }
@@ -191,8 +191,11 @@ public class MatrixView extends View {
                         //this.removeMessages(0);
                         sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
                     }
-                    else
+                    else {
                         Log.d("mydebug", "Game over");
+                        //User.bestScore = levelHandler.getScore();
+                        startGame();
+                    }
                 }
             }
 
@@ -299,4 +302,5 @@ public class MatrixView extends View {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

@@ -16,7 +16,9 @@ import android.widget.TextView;
 // game over: replay or main menu (pop_up?)
 // pause
 // new game
+// explain controls
 // save best score
+// display bast score on main menu
 // save game
 // music (+ add mute/volume in settings)
 // noises
@@ -25,8 +27,9 @@ import android.widget.TextView;
 // settings erase best score button
 // settings matrix size
 // settings default
+// keep moving when hold left or right
 
-public class TetrisActivity extends Activity {
+public class TetrisActivity extends MyActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends MyActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
