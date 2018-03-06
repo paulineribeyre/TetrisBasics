@@ -31,4 +31,9 @@ public class MainMenuActivity extends Activity {
         startActivity(intent);
     }
 
+    public void closeGame(View view) {
+        finish();
+        System.exit(0);
+    }
+
 }
