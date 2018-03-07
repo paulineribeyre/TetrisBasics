@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,6 +26,8 @@ public class MatrixView extends View {
 
     private int screenWidth;
     private int screenHeight;
+    private int viewWidth;
+    private int viewHeight;
 
     private TetrisMatrix matrix;
     //private int matrixWidth, matrixHeight;
@@ -99,15 +102,24 @@ public class MatrixView extends View {
     }
 
     private void calculateCellSize() {
-        sizeCellX = (int)Math.floor(screenWidth / (matrix.getNbCellsX() + 3));
-        sizeCellY = (int)Math.floor(screenHeight / matrix.getNbCellsY());
+        sizeCellX = (int)Math.floor(viewWidth / (matrix.getNbCellsX() + 3));
+        sizeCellY = (int)Math.floor(viewHeight / matrix.getNbCellsY());
         sizeCellX = sizeCellY = Math.min(sizeCellX, sizeCellY);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        screenWidth = w;
-        screenHeight = h;
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((TetrisActivity) getContext()).getWindowManager()
+                .getDefaultDisplay()
+                .getMetrics(displayMetrics);
+        screenHeight = displayMetrics.heightPixels;
+        screenWidth = displayMetrics.widthPixels;
+
+        viewWidth = w;
+        viewHeight = h;
         calculateCellSize();
         //matrixWidth = sizeCellX * matrix.getNbCellsX();
         //matrixHeight = sizeCellY * matrix.getNbCellsY();
@@ -125,7 +137,7 @@ public class MatrixView extends View {
         int type;
         Drawable cell = getResources().getDrawable(R.drawable.tetris_piece); // use drawable image instead of rectangles
 
-        int yOrigin = screenHeight - sizeCellY * matrix.getNbCellsY();
+        int yOrigin = viewHeight - sizeCellY * matrix.getNbCellsY();
 
         // draw the game matrix
         for (int y = 0; y <  matrix.getNbCellsY(); y ++) {

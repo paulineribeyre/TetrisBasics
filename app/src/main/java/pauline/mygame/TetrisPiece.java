@@ -1,5 +1,7 @@
 package pauline.mygame;
 
+import android.graphics.Color;
+
 import java.io.Serializable;
 
 public class TetrisPiece implements Serializable {
@@ -25,6 +27,7 @@ public class TetrisPiece implements Serializable {
                         shape[y][x] = 1;
                     }
                 }
+                color = Color.argb(255, 240, 240, 0);
                 break;
 
             case 2: // I
@@ -34,6 +37,7 @@ public class TetrisPiece implements Serializable {
                 for (int y = 0; y < height; y++) {
                     shape[y][0] = 1;
                 }
+                color = Color.argb(255, 0, 240, 240);
                 break;
 
             case 3: // T
@@ -44,6 +48,7 @@ public class TetrisPiece implements Serializable {
                 for (int x = 0; x < width; x++) {
                     shape[1][x] = 1;
                 }
+                color = Color.argb(255, 160, 0, 240);
                 break;
 
             case 4: // L
@@ -54,6 +59,7 @@ public class TetrisPiece implements Serializable {
                 for (int y = 0; y < height; y++) {
                     shape[y][0] = 1;
                 }
+                color = Color.argb(255, 240, 160, 0);
                 break;
 
             case 5: // J
@@ -64,6 +70,7 @@ public class TetrisPiece implements Serializable {
                 for (int y = 0; y < height; y++) {
                     shape[y][1] = 1;
                 }
+                color = Color.argb(255, 0, 0, 240);
                 break;
 
             case 6: // S
@@ -75,6 +82,7 @@ public class TetrisPiece implements Serializable {
                         shape[y][x] = 1;
                     }
                 }
+                color = Color.argb(255, 0, 240, 0);
                 break;
 
             case 7: // Z
@@ -87,6 +95,7 @@ public class TetrisPiece implements Serializable {
                         shape[y][x] = 1;
                     }
                 }
+                color = Color.argb(255, 240, 0, 0);
                 break;
 
         }
