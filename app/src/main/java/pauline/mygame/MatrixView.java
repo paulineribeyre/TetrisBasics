@@ -1,7 +1,10 @@
 package pauline.mygame;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -231,14 +234,34 @@ public class MatrixView extends View {
                         sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
                     }
                     else {
-                        Log.d("mydebug", "Game over");
-                        //User.bestScore = levelHandler.getScore();
-                        startNewGame();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setCancelable(true);
+                        builder.setTitle("Game over!");
+                        builder.setMessage("Do you want to start a new game?");
+                        builder.setPositiveButton("Yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startNewGame();
+                                    }
+                                });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                User.startNewGame();
+                                ((TetrisActivity) getContext()).finish();
+                                //Intent intent = new Intent(getContext(), MainMenuActivity.class);
+                                //getContext().startActivity(intent);
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
                     }
                 }
-            }
-
-            else if (msg.what == 0) {
+            } else if (msg.what == 0) {
                 moveGame(); //Log.d("mydebug", "MatrixView.RefreshHandler moving");
                 //MatrixView.this.invalidate(); // redraw
             }

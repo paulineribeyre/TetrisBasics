@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 // TODO list
-// game over: replay or main menu (pop_up?)
 // explain controls
-// ask for confirmation: new game, erase best score, default settings
 // music (+ add mute/volume in settings)
 // noises
 // google play
@@ -23,6 +21,7 @@ import android.widget.TextView;
 // settings matrix size
 // keep moving when hold left or right
 // fonts license reference
+// strings in resource file (android.R...)
 
 public class TetrisActivity extends MyActivity {
 
