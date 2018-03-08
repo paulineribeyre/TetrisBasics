@@ -22,6 +22,9 @@ public class User {
     public static int bestScore = 0;
     public static TetrisMatrix currentGame;
 
+    // score progress
+    public static LevelHandler levelHandler;
+
     public User(){
         /*nbCellsX = 10;
         nbCellsY = 20;*/
@@ -30,6 +33,7 @@ public class User {
 
     public static void startNewGame() {
         currentGame = new TetrisMatrix(nbCellsY, nbCellsX); // create the matrix after initializing the number of cells
+        levelHandler = new LevelHandler();
     }
 
 }

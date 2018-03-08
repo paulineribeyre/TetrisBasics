@@ -33,13 +33,14 @@ public class MyActivity extends Activity {
 
         try {
             FileOutputStream fos = new FileOutputStream(this.getExternalFilesDir(null) + "/" + saveFileName);
-            ObjectOutputStream os = null;
+            ObjectOutputStream os;
             os = new ObjectOutputStream(fos);
             SerializableUser user = new SerializableUser();
             os.writeObject(user);
             os.close();
             fos.close();
             saved = true;
+
         } catch (Exception e) {
             Log.d("mydebug", "Cannot save game - Caught Exception: " + e.getMessage());
         }
@@ -52,8 +53,8 @@ public class MyActivity extends Activity {
 
         boolean loaded = false;
 
-        SerializableUser user = new SerializableUser();
-        FileInputStream fis = null;
+        SerializableUser user;
+        FileInputStream fis;
         try {
             fis = new FileInputStream (new File(this.getExternalFilesDir(null) + "/" + saveFileName));
             ObjectInputStream is = new ObjectInputStream(fis);
@@ -61,17 +62,19 @@ public class MyActivity extends Activity {
             is.close();
             fis.close();
             loaded = true;
+
+            User.bestScore = user.bestScore;
+            User.currentGame = user.currentGame;
+            User.useRandomColors = user.useRandomColors;
+            User.touchToMove = user.touchToMove;
+            User.nbCellsX = user.nbCellsX;
+            User.nbCellsY = user.nbCellsY;
+            User.levelHandler = user.levelHandler;
+
         } catch (Exception e) {
             Log.d("mydebug", "Cannot load saved game - Caught Exception: " + e.getMessage());
             new User(); // so that the constructor function is called --> new game
         }
-
-        User.bestScore = user.bestScore;
-        User.currentGame = user.currentGame;
-        User.useRandomColors = user.useRandomColors;
-        User.touchToMove = user.touchToMove;
-        User.nbCellsX = user.nbCellsX;
-        User.nbCellsY = user.nbCellsY;
 
         return loaded;
 

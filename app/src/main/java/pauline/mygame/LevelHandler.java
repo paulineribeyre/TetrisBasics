@@ -2,7 +2,9 @@ package pauline.mygame;
 
 import android.util.Log;
 
-public class LevelHandler {
+import java.io.Serializable;
+
+public class LevelHandler implements Serializable {
 
     private int score;
     private int level;

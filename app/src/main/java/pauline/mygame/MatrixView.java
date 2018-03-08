@@ -59,7 +59,8 @@ public class MatrixView extends View {
 
     public void startGame() {
         matrix = User.currentGame; // new TetrisMatrix();
-        levelHandler = new LevelHandler();
+        //levelHandler = new LevelHandler();
+        levelHandler = User.levelHandler;
         if (colorArray == null)
             initColorArray();
         //if (firstTimeGameStarts){
@@ -77,7 +78,7 @@ public class MatrixView extends View {
 
         Random rnd = new Random();
         int r, g, b;
-        double luminance = 0;
+        double luminance;
 
         do {
             r = rnd.nextInt(256);
