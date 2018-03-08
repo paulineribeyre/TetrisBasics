@@ -25,6 +25,10 @@ public class User {
     public User(){
         /*nbCellsX = 10;
         nbCellsY = 20;*/
+        startNewGame();
+    }
+
+    public static void startNewGame() {
         currentGame = new TetrisMatrix(nbCellsY, nbCellsX); // create the matrix after initializing the number of cells
     }
 

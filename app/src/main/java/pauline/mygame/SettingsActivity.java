@@ -43,6 +43,10 @@ public class SettingsActivity extends MyActivity {
         // TODO
     }
 
+    public void startNewGame(View view) {
+        User.startNewGame();
+    }
+
     public void eraseBestScore(View view) {
         User.bestScore = 0;
     }

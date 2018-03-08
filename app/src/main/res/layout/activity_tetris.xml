@@ -24,14 +24,23 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/points_text_view"
-            android:text="(points)"
-            android:editable="true"
-            android:textColor="#ffffff"
-            android:textSize="25dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/level_text_view"
+                android:text="(level)"
+                android:editable="true"
+                android:textColor="#ffffff"
+                android:textSize="25dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/score_text_view"
+                android:text="(score)"
+                android:editable="true"
+                android:textColor="#ffffff"
+                android:textSize="25dp" />
 
         </LinearLayout>
 
@@ -46,11 +55,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/level_text_view"
-                android:text="(level)"
+                android:id="@+id/best_score_text_view"
+                android:text="(best score)"
                 android:editable="true"
                 android:textColor="#ffffff"
-                android:textSize="25dp" />
+                android:textSize="25dp"
+                android:gravity="center" />
         </LinearLayout>
 
     </LinearLayout>

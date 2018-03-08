@@ -63,10 +63,11 @@ public class MyActivity extends Activity {
             loaded = true;
         } catch (Exception e) {
             Log.d("mydebug", "Cannot load saved game - Caught Exception: " + e.getMessage());
+            new User(); // so that the constructor function is called --> new game
         }
 
         User.bestScore = user.bestScore;
-        //User.currentGame = user.currentGame;
+        User.currentGame = user.currentGame;
         User.useRandomColors = user.useRandomColors;
         User.touchToMove = user.touchToMove;
         User.nbCellsX = user.nbCellsX;

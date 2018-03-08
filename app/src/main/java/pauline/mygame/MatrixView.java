@@ -37,11 +37,15 @@ public class MatrixView extends View {
     //private Bitmap[] cellArray;
 
     private TextView levelTextView;
-    private TextView pointsTextView;
+    private TextView scoreTextView;
+    private TextView bestScoreTextView;
+
+    private boolean paused = false;
 
     //private int moveDelay = 300; //1200;
     private LevelHandler levelHandler;
     private RefreshHandler refreshHandler = new RefreshHandler();
+    private boolean firstTimeGameStarts = true;
 
     float initialX = 0; // X position of finger on initial touch
     float initialY = 0; // Y position of finger on initial touch
@@ -50,18 +54,22 @@ public class MatrixView extends View {
 
     public MatrixView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        startGame();
+        //startGame() is called automatically by onResume()
     }
 
-    private void startGame() {
+    public void startGame() {
         matrix = User.currentGame; // new TetrisMatrix();
         levelHandler = new LevelHandler();
-        initColorArray();
+        if (colorArray == null)
+            initColorArray();
+        //if (firstTimeGameStarts){
         refreshHandler.sendEmptyMessage(1); // start the game
+        //    firstTimeGameStarts = false;
+        //}
     }
 
     private void startNewGame() {
-        User.currentGame = new TetrisMatrix();
+        User.startNewGame();
         startGame();
     }
 
@@ -183,27 +191,31 @@ public class MatrixView extends View {
         //TextView myTextView = (TextView) this.getParent().findViewById(R.id.level_text_view);
         //myTextView.setText("Level " + levelHandler.getLevel());
         if (levelTextView != null) {
-            pointsTextView.setText("SCORE: " + levelHandler.getScore() + "(best: " + User.bestScore + ")");
             levelTextView.setText("LEVEL " + levelHandler.getLevel());
+            scoreTextView.setText("SCORE: " + levelHandler.getScore());
+            bestScoreTextView.setText("BEST SCORE:\n" + User.bestScore);
         }
 
     }
 
     private void moveGame() {
-        if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
-            //refreshHandler.removeMessages(0);
-            //levelHandler.dropNormalSpeed();
-            refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
-        }
-        else { // the current piece cannot drop anymore
-            //matrix.addNewPiece(1);
-            refreshHandler.sendEmptyMessageDelayed(1, levelHandler.getMoveDelay());
+        if (!paused) {
+            if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
+                //refreshHandler.removeMessages(0);
+                //levelHandler.dropNormalSpeed();
+                refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
+            } else { // the current piece cannot drop anymore
+                //matrix.addNewPiece(1);
+                refreshHandler.sendEmptyMessageDelayed(1, levelHandler.getMoveDelay());
+            }
         }
     }
 
     private class RefreshHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            Log.d("mydebug", "RefreshHandler msg "+msg.what);
+
             if (msg.what == 1) { // new game, or the current piece cannot drop anymore
                 if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // case when the piece is moved after colliding
                     //refreshHandler.removeMessages(0);
@@ -230,6 +242,11 @@ public class MatrixView extends View {
                 moveGame(); //Log.d("mydebug", "MatrixView.RefreshHandler moving");
                 //MatrixView.this.invalidate(); // redraw
             }
+
+            // TODO explicit msg.what values
+            //else if (msg.what == 2) { // stop moving
+                // stop moving
+            //}
 
             MatrixView.this.invalidate(); // redraw
         }
@@ -296,7 +313,7 @@ public class MatrixView extends View {
                         //Log.d("mydebug", "MatrixView.onTouchEvent C hasMessages");
                         //refreshHandler.removeMessages(1);
                     //}
-                    refreshHandler.sendEmptyMessage(2);
+                    refreshHandler.sendEmptyMessage(-1);
                 }
 
 
@@ -322,8 +339,16 @@ public class MatrixView extends View {
         this.levelTextView = levelTextView;
     }
 
-    public void setPointsTextView(TextView pointsTextView) {
-        this.pointsTextView = pointsTextView;
+    public void setBestScoreTextView(TextView bestScoreTextView) {
+        this.bestScoreTextView = bestScoreTextView;
+    }
+
+    public void setScoreTextView(TextView scoreTextView) {
+        this.scoreTextView = scoreTextView;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 
 }

@@ -29,7 +29,7 @@ public class MainMenuActivity extends MyActivity {
         setContentView(R.layout.activity_main_menu);
 
         // Load the saved game
-        new User(); // so that the constructor function is called
+        //new User(); // so that the constructor function is called
         loadGame();
 
         TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
@@ -37,10 +37,6 @@ public class MainMenuActivity extends MyActivity {
 
         TextView subtitleTextView = (TextView) findViewById(R.id.subtitle_text_view);
         subtitleTextView.setTypeface(Typefaces.get(this, "ITCKRIST.TTF"));
-
-        TextView bestscoreTextView = (TextView) findViewById(R.id.bestscore_text_view);
-        //bestscoreTextView.setTypeface(Typefaces.get(this, "BAUHS93.TTF"));
-        bestscoreTextView.setText("Best score: " + User.bestScore);
 
     }
 

@@ -3,8 +3,10 @@
     <string name="title">Tetris</string>
     <string name="subtitle">basics</string>
     <string name="button_play_str">Play</string>
+    <string name="button_pause_str">|| Pause game</string>
     <string name="button_settings_str">Settings</string>
     <string name="button_exit_str">Exit</string>
+    <string name="button_new_game_str">New game</string>
     <string name="button_erase_score_str">Erase best score</string>
     <string name="button_default_settings_str">Default settings</string>
 

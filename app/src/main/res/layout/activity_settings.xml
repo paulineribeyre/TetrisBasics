@@ -81,7 +81,17 @@
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:text="@string/button_new_game_str"
+            android:id="@+id/new_game_button"
+            android:layout_gravity="center_horizontal"
+            android:onClick="startNewGame"
+            android:textColor="#ffffff"
+            android:background="@drawable/button_bottom_border" />
+
+        <Button
+            android:layout_width="130dp"
             android:layout_height="50dp"
             android:text="@string/button_erase_score_str"
             android:id="@+id/erase_score_button"
