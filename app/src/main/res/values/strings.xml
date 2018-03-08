@@ -6,9 +6,9 @@
     <string name="button_pause_str">|| Pause game</string>
     <string name="button_settings_str">Settings</string>
     <string name="button_exit_str">Exit</string>
-    <string name="button_new_game_str">New game</string>
-    <string name="button_erase_score_str">Erase best score</string>
-    <string name="button_default_settings_str">Default settings</string>
+    <string name="button_new_game_str">Reset game</string>
+    <string name="button_erase_score_str">Reset best score</string>
+    <string name="button_default_settings_str">Reset settings</string>
 
     <string name="settings_random_colors">Use random colors?</string>
     <string name="button_ok_str">Save</string>

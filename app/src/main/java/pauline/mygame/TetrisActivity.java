@@ -14,9 +14,8 @@ import android.widget.TextView;
 
 // TODO list
 // game over: replay or main menu (pop_up?)
-// pause button
-// new game button
 // explain controls
+// ask for confirmation: new game, erase best score, default settings
 // music (+ add mute/volume in settings)
 // noises
 // google play

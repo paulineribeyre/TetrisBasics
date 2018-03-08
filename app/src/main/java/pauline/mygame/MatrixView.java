@@ -215,7 +215,6 @@ public class MatrixView extends View {
     private class RefreshHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            Log.d("mydebug", "RefreshHandler msg "+msg.what);
 
             if (msg.what == 1) { // new game, or the current piece cannot drop anymore
                 if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // case when the piece is moved after colliding

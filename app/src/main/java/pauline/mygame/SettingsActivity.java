@@ -1,6 +1,8 @@
 package pauline.mygame;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,11 +29,7 @@ public class SettingsActivity extends MyActivity {
         randomColorsToggleButton = (ToggleButton) findViewById(R.id.settings_random_colors_toggleButton);
         randomColorsToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    User.useRandomColors = true;
-                } else {
-                    User.useRandomColors = false;
-                }
+                User.useRandomColors = isChecked;
             }
         });
 
@@ -44,19 +42,82 @@ public class SettingsActivity extends MyActivity {
     }
 
     public void startNewGame(View view) {
-        User.startNewGame();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("");
+        builder.setMessage("Do you really want to reset the current game?");
+        builder.setPositiveButton("Reset",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        User.startNewGame();
+                        saveGame();
+                        Intent intent = new Intent(SettingsActivity.this, MainMenuActivity.class);
+                        startActivity(intent);
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     public void eraseBestScore(View view) {
-        User.bestScore = 0;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("");
+        builder.setMessage("Do you really want to reset your best score?");
+        builder.setPositiveButton("Reset",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        User.bestScore = 0;
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     public void setDefaultSettings(View view) {
-        User.useRandomColors = true;
-        User.touchToMove = true;
-        User.nbCellsX = 10;
-        User.nbCellsY = 20;
-        copyUserSettings();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("");
+        builder.setMessage("Do you really want to reset the settings?");
+        builder.setPositiveButton("Reset",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        User.useRandomColors = true;
+                        User.touchToMove = true;
+                        User.nbCellsX = 10;
+                        User.nbCellsY = 20;
+                        copyUserSettings();
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
 }
