@@ -2,13 +2,21 @@
     <string name="app_name">Tetris Basics</string>
     <string name="title">Tetris</string>
     <string name="subtitle">basics</string>
+
+    <!-- Main Menu -->
     <string name="button_play_str">Play</string>
-    <string name="button_pause_str">|| Pause game</string>
     <string name="button_settings_str">Settings</string>
     <string name="button_exit_str">Exit</string>
+
+    <!-- Settings -->
+    <string name="settings_random_colors">Use random colors?</string>
     <string name="button_new_game_str">Reset game</string>
     <string name="button_erase_score_str">Reset best score</string>
     <string name="button_default_settings_str">Reset settings</string>
-    <string name="settings_random_colors">Use random colors?</string>
-    <string name="button_ok_str">Save</string>
+    <string name="button_about_str">About</string>
+
+    <!-- About -->
+    <string name="about_author_str1">Author</string>
+    <string name="about_author_str2">github.com/paulineribeyre</string>
+    <string name="about_font_str">Fonts</string>
 </resources>

@@ -20,8 +20,8 @@ import android.widget.TextView;
 // settings switch rotate/move commands
 // settings matrix size
 // keep moving when hold left or right
-// fonts license reference
 // strings in resource file (android.R...)
+// add after game over (AdMob)
 
 public class TetrisActivity extends MyActivity {
 

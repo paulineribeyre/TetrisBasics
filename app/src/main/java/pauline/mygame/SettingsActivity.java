@@ -120,4 +120,9 @@ public class SettingsActivity extends MyActivity {
 
     }
 
+    public void openAbout(View view) {
+        Intent intent = new Intent(SettingsActivity.this, AboutActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -36,7 +36,7 @@
             android:textSize="30dp"
             android:paddingBottom="25dp"/>
 
-        <!-- Settings -->
+        <!-- About -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -44,7 +44,7 @@
             <!-- Column 1 -->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
@@ -52,11 +52,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/settings_random_colors"
+                    android:layout_weight="1"
+                    android:text="@string/about_author_str1"
                     android:checked="true"
                     android:padding="15px"
                     android:gravity="center_vertical|center_horizontal"
-                    android:layout_gravity="right"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/about_font_str"
+                    android:checked="true"
+                    android:padding="15px"
+                    android:gravity="center_vertical|center_horizontal"
                     android:textColor="#ffffff" />
 
             </LinearLayout>
@@ -64,61 +74,33 @@
             <!-- Column 2 -->
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
 
-                <ToggleButton
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/about_author_str2"
+                    android:checked="true"
+                    android:padding="15px"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="left"
+                    android:textColor="#ffffff" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/settings_random_colors_toggleButton"
-                    style="@android:style/Widget.Holo.Button.Toggle"
-                    android:text="@string/settings_random_colors"
-                    android:background="#00ffffff"
-                    android:layout_gravity="left" />
+                    android:layout_weight="1"
+                    android:text="- Blocked (Creative Commons Attribution Share Alike license by Sabata),\n- Kristen ITC (Copyright (c) International Typeface Corporation 199),\n- Bauhaus 93 (URW++)"
+                    android:checked="true"
+                    android:padding="15px"
+                    android:gravity="left|center_vertical"
+                    android:textColor="#ffffff" />
             </LinearLayout>
         </LinearLayout>
-
-        <Button
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:text="@string/button_new_game_str"
-            android:id="@+id/new_game_button"
-            android:layout_gravity="center_horizontal"
-            android:onClick="startNewGame"
-            android:textColor="#ffffff"
-            android:background="@drawable/button_bottom_border" />
-
-        <Button
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:text="@string/button_erase_score_str"
-            android:id="@+id/erase_score_button"
-            android:layout_gravity="center_horizontal"
-            android:onClick="eraseBestScore"
-            android:textColor="#ffffff"
-            android:background="@drawable/button_bottom_border" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="@string/button_default_settings_str"
-            android:id="@+id/default_settings_button"
-            android:layout_gravity="center_horizontal"
-            android:onClick="setDefaultSettings"
-            android:textColor="#ffffff"
-            android:background="@drawable/button_bottom_border" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="@string/button_about_str"
-            android:id="@+id/about_button"
-            android:layout_gravity="center_horizontal"
-            android:onClick="openAbout"
-            android:textColor="#ffffff"
-            android:background="#00ffffff" />
 
     </LinearLayout>
 
