@@ -20,6 +20,9 @@ public class AboutActivity extends MyActivity {
 
         TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
         titleTextView.setTypeface(Typefaces.get(this, "blocked.ttf"));
+
+        TextView subtitleTextView = (TextView) findViewById(R.id.subtitle_text_view);
+        subtitleTextView.setTypeface(Typefaces.get(this, "ITCKRIST.TTF"));
     }
 
 }

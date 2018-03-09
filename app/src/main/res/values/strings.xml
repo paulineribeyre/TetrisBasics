@@ -9,7 +9,10 @@
     <string name="button_exit_str">Exit</string>
 
     <!-- Settings -->
-    <string name="settings_random_colors">Use random colors?</string>
+    <string name="settings_random_colors_str">Use random colors?</string>
+    <string name="settings_switch_commands_str">Switch move/rotate commands?</string>
+    <string name="settings_size_x_str">Game width:</string>
+    <string name="settings_size_y_str">Game height:</string>
     <string name="button_new_game_str">Reset game</string>
     <string name="button_erase_score_str">Reset best score</string>
     <string name="button_default_settings_str">Reset settings</string>

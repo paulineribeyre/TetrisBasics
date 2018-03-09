@@ -5,15 +5,21 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class SettingsActivity extends MyActivity {
 
     ToggleButton randomColorsToggleButton;
+    ToggleButton switchCommandsToggleButton;
+    EditText gameWidthEditText;
+    EditText gamHeightEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +39,39 @@ public class SettingsActivity extends MyActivity {
             }
         });
 
+        switchCommandsToggleButton = (ToggleButton) findViewById(R.id.settings_switch_commands_toggleButton);
+        switchCommandsToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                User.touchToMove = !isChecked;
+            }
+        });
+
+        gameWidthEditText = (EditText) findViewById(R.id.settings_game_width_editText); // TODO add changelistener
+        gameWidthEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d("mydebug", "beforeTextChanged");
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("mydebug", "onTextChanged "+s);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d("mydebug", "afterTextChanged");
+            }
+        });
+
+        gamHeightEditText = (EditText) findViewById(R.id.settings_game_height_editText);
+
         copyUserSettings();
     }
 
     private void copyUserSettings() {
         randomColorsToggleButton.setChecked(User.useRandomColors);
-        // TODO
+        switchCommandsToggleButton.setChecked(User.touchToMove);
+        gameWidthEditText.setText(""+User.nbCellsX);
+        gamHeightEditText.setText(""+User.nbCellsY);
     }
 
     public void startNewGame(View view) {

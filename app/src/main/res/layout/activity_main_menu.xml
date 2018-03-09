@@ -9,6 +9,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pauline.mygame.MainMenuActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/main_menu_background"
+            android:layout_alignParentBottom="true" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -76,17 +87,6 @@
             android:background="#00ffffff" />
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <ImageView
-            android:adjustViewBounds="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/main_menu_background"
-            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 
