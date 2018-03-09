@@ -46,23 +46,35 @@ public class SettingsActivity extends MyActivity {
             }
         });
 
-        gameWidthEditText = (EditText) findViewById(R.id.settings_game_width_editText); // TODO add changelistener
+        gameWidthEditText = (EditText) findViewById(R.id.settings_game_width_editText);
         gameWidthEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.d("mydebug", "beforeTextChanged");
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d("mydebug", "onTextChanged "+s);
+                try {
+                    User.nbCellsX = Integer.parseInt(s.toString());
+                }
+                catch (Exception e) {}
             }
             @Override
-            public void afterTextChanged(Editable s) {
-                Log.d("mydebug", "afterTextChanged");
-            }
+            public void afterTextChanged(Editable s) {}
         });
 
         gamHeightEditText = (EditText) findViewById(R.id.settings_game_height_editText);
+        gamHeightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    User.nbCellsY = Integer.parseInt(s.toString());
+                }
+                catch (Exception e) {}
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
         copyUserSettings();
     }

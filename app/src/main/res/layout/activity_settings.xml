@@ -120,16 +120,20 @@
                     android:layout_gravity="left" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/settings_game_width_editText"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_marginLeft="15dp" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/settings_game_height_editText"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_marginLeft="15dp" />
 
             </LinearLayout>
         </LinearLayout>
