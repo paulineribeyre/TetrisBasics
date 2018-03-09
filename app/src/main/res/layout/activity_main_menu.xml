@@ -64,7 +64,7 @@
             android:layout_gravity="center_horizontal"
             android:onClick="openGame"
             android:textColor="#ffffff"
-            android:background="@drawable/button_bottom_border" />
+            android:background="@drawable/button_bottom_border"/>
 
         <Button
             android:layout_width="80dp"

@@ -210,7 +210,7 @@ public class MatrixView extends View {
                 refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
             } else { // the current piece cannot drop anymore
                 //matrix.addNewPiece(1);
-                refreshHandler.sendEmptyMessageDelayed(1, levelHandler.getMoveDelay());
+                refreshHandler.sendEmptyMessage(1);
             }
         }
     }
@@ -231,6 +231,7 @@ public class MatrixView extends View {
                     if (matrix.addNewPiece()) {
                         //MatrixView.this.invalidate(); // redraw
                         //this.removeMessages(0);
+                        //sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
                         sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
                     }
                     else {
