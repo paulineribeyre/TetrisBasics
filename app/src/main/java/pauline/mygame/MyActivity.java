@@ -8,7 +8,7 @@ import java.io.*;
 
 public class MyActivity extends Activity {
 
-    private static String saveFileName = "gamesave";
+    private static String saveFileName = "gamesave"; // file in which the current states of the game and settings are saved
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +17,7 @@ public class MyActivity extends Activity {
 
     }
 
+    // every time the app or an activity is closed, the current game is saved
     @Override
     public void onStop() {
 
@@ -27,6 +28,7 @@ public class MyActivity extends Activity {
 
     }
 
+    // serializes the current states of the game and the settings and saves them in a file
     public boolean saveGame() {
 
         boolean saved = false;
@@ -49,6 +51,7 @@ public class MyActivity extends Activity {
 
     }
 
+    // reads the file containing the serialized current states of the game and the settings
     public boolean loadGame() {
 
         boolean loaded = false;
@@ -63,6 +66,7 @@ public class MyActivity extends Activity {
             fis.close();
             loaded = true;
 
+            // copy the previously serialized information to the current user
             User.bestScore = user.bestScore;
             User.currentGame = user.currentGame;
             User.useRandomColors = user.useRandomColors;

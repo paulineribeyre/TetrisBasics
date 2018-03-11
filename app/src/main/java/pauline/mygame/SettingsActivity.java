@@ -1,13 +1,11 @@
 package pauline.mygame;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -16,6 +14,7 @@ import android.widget.ToggleButton;
 
 public class SettingsActivity extends MyActivity {
 
+    // settings editable by the user
     ToggleButton randomColorsToggleButton;
     ToggleButton switchCommandsToggleButton;
     EditText gameWidthEditText;
@@ -26,12 +25,14 @@ public class SettingsActivity extends MyActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        // set the fonts
         TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
         titleTextView.setTypeface(Typefaces.get(this, "blocked.ttf"));
 
         TextView subtitleTextView = (TextView) findViewById(R.id.subtitle_text_view);
         subtitleTextView.setTypeface(Typefaces.get(this, "ITCKRIST.TTF"));
 
+        // when a settings is changed, it is immediately saved in the current user settings
         randomColorsToggleButton = (ToggleButton) findViewById(R.id.settings_random_colors_toggleButton);
         randomColorsToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -79,6 +80,7 @@ public class SettingsActivity extends MyActivity {
         copyUserSettings();
     }
 
+    // on starting the app, the current settings are copied from the user's previous choices
     private void copyUserSettings() {
         randomColorsToggleButton.setChecked(User.useRandomColors);
         switchCommandsToggleButton.setChecked(!User.touchToMove);
@@ -86,6 +88,7 @@ public class SettingsActivity extends MyActivity {
         gamHeightEditText.setText(""+User.nbCellsY);
     }
 
+    // on click on the reset game button, a dialog asking for confirmation is displayed
     public void startNewGame(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -96,9 +99,9 @@ public class SettingsActivity extends MyActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        User.startNewGame();
+                        User.startNewGame(); // reset the current game
                         saveGame();
-                        Intent intent = new Intent(SettingsActivity.this, MainMenuActivity.class);
+                        Intent intent = new Intent(SettingsActivity.this, MainMenuActivity.class); // go back to the main menu
                         startActivity(intent);
                     }
                 });
@@ -113,6 +116,7 @@ public class SettingsActivity extends MyActivity {
 
     }
 
+    // on click on the reset best score button, a dialog asking for confirmation is displayed
     public void eraseBestScore(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -123,7 +127,7 @@ public class SettingsActivity extends MyActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        User.bestScore = 0;
+                        User.bestScore = 0; // reset the current best score
                     }
                 });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -137,6 +141,7 @@ public class SettingsActivity extends MyActivity {
 
     }
 
+    // on click on the reset settings button, a dialog asking for confirmation is displayed
     public void setDefaultSettings(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -147,6 +152,7 @@ public class SettingsActivity extends MyActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // go back to the default settings
                         User.useRandomColors = true;
                         User.touchToMove = true;
                         User.nbCellsX = 10;
@@ -165,6 +171,7 @@ public class SettingsActivity extends MyActivity {
 
     }
 
+    // on click on the about button, the about activity is opened
     public void openAbout(View view) {
         Intent intent = new Intent(SettingsActivity.this, AboutActivity.class);
         startActivity(intent);

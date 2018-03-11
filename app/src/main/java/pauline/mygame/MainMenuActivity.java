@@ -1,27 +1,11 @@
 package pauline.mygame;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 public class MainMenuActivity extends MyActivity {
 
@@ -31,10 +15,10 @@ public class MainMenuActivity extends MyActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        // Load the saved game
-        //new User(); // so that the constructor function is called
+        // load the saved game
         loadGame();
 
+        // set the fonts
         TextView titleTextView = (TextView) findViewById(R.id.title_text_view);
         titleTextView.setTypeface(Typefaces.get(this, "blocked.ttf"));
 
@@ -43,15 +27,17 @@ public class MainMenuActivity extends MyActivity {
 
     }
 
+    // on click on the play button, the game activity is opened
     public void openGame(View view) {
         Intent intent = new Intent(MainMenuActivity.this, TetrisActivity.class);
         startActivity(intent);
     }
 
+    // on click on the instructions button, a dialog describing the controls is displayed
     public void openInstructions(View view) {
 
         String instructions = "";
-        if (User.touchToMove)
+        if (User.touchToMove) // the controls depends on the settings chosen by the user
             instructions += "To move horizontally, tap on the left or right half of the screen.\nTo rotate a tetromino, drag your finger to the left or right of the screen.\n";
         else
             instructions += "To move horizontally, drag your finger to the left or right of the screen.\nTo rotate a tetromino, tap on the left or right half of the screen.\n";
@@ -72,11 +58,13 @@ public class MainMenuActivity extends MyActivity {
 
     }
 
+    // on click on the settings button, the settings activity is opened
     public void openSettings(View view) {
         Intent intent = new Intent(MainMenuActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    // on click on the exit button, the app closes
     public void closeGame(View view) {
         onStop();
         finish();

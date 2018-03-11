@@ -1,26 +1,19 @@
 package pauline.mygame;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -32,57 +25,53 @@ public class MatrixView extends View {
     private int viewWidth;
     private int viewHeight;
 
-    private TetrisMatrix matrix;
-    //private int matrixWidth, matrixHeight;
+    private TetrisMatrix matrix; // tetris game matrix
 
-    private int[] colorArray; // one color for each Tetris shape
-    private int sizeCellX, sizeCellY;
-    //private Bitmap[] cellArray;
+    private int[] colorArray; // one color for each type of Tetromino
+    private int sizeCellX, sizeCellY; // size of each tile of the matrix
 
+    // textViews in which the level and score will be displayed
     private TextView levelTextView;
     private TextView scoreTextView;
     private TextView bestScoreTextView;
 
-    private boolean paused = false;
+    private boolean paused = false; // is the user currently playing?
 
-    //private int moveDelay = 300; //1200;
     private LevelHandler levelHandler;
     private RefreshHandler refreshHandler = new RefreshHandler();
-    private boolean firstTimeGameStarts = true;
 
     float initialX = 0; // X position of finger on initial touch
     float initialY = 0; // Y position of finger on initial touch
-    private final int movementSensibilityX = 30;
-    //private final int touchDelay = 20;
+    private final int movementSensibilityX = 30; // threshold to decide if a touch is a tap or a drag
 
     public MatrixView(Context context, AttributeSet attrs) {
         super(context, attrs);
         //startGame() is called automatically by onResume()
     }
 
+    // start playing
     public void startGame() {
         matrix = User.currentGame; // new TetrisMatrix();
-        //levelHandler = new LevelHandler();
         levelHandler = User.levelHandler;
         if (colorArray == null)
             initColorArray();
-        //if (firstTimeGameStarts){
         refreshHandler.sendEmptyMessage(MESSAGE.COLLISION.ordinal()); // start the game
-        //    firstTimeGameStarts = false;
-        //}
     }
 
+    // start a new game of tetris
     private void startNewGame() {
         User.startNewGame();
         startGame();
     }
 
+    // get a random color for a type of tetromino
     public int getRandomColor(){
 
         Random rnd = new Random();
         int r, g, b;
         double luminance;
 
+        // only select light colors
         do {
             r = rnd.nextInt(256);
             g = rnd.nextInt(256);
@@ -103,7 +92,7 @@ public class MatrixView extends View {
     }
 
     public void initColorArray() {
-        colorArray = new int[8];
+        colorArray = new int[8]; // one color for each type of Tetromino and one for the background
         colorArray[0] = Color.WHITE; // Game matrix background
         for (int i = 1; i < 8; i++) {
             if (User.useRandomColors)
@@ -113,16 +102,16 @@ public class MatrixView extends View {
         }
     }
 
+    // calculates the size of the matrix tiles depending on the available screen space
     private void calculateCellSize() {
         sizeCellX = (int)Math.floor(viewWidth / (matrix.getNbCellsX() + 3));
         sizeCellY = (int)Math.floor(viewHeight / matrix.getNbCellsY());
-        sizeCellX = sizeCellY = Math.min(sizeCellX, sizeCellY);
+        sizeCellX = sizeCellY = Math.min(sizeCellX, sizeCellY); // for now, the tiles are squares
     }
 
+    // save the size of the available screen space
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-
-
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((TetrisActivity) getContext()).getWindowManager()
                 .getDefaultDisplay()
@@ -132,11 +121,11 @@ public class MatrixView extends View {
 
         viewWidth = w;
         viewHeight = h;
-        calculateCellSize();
-        //matrixWidth = sizeCellX * matrix.getNbCellsX();
-        //matrixHeight = sizeCellY * matrix.getNbCellsY();
+
+        calculateCellSize(); // (re)calculate the size of the tiles
     }
 
+    // displays the tetris game matrix
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -165,7 +154,7 @@ public class MatrixView extends View {
 
                 // cell containing a Tetris piece
                 else {
-                    cell.setColorFilter(colorArray[type], PorterDuff.Mode.MULTIPLY);
+                    cell.setColorFilter(colorArray[type], PorterDuff.Mode.MULTIPLY); // set a color filter to the color of this type of tetromino
                     cell.setBounds(x * sizeCellX, yOrigin + y * sizeCellY,
                             (x + 1) * sizeCellX, yOrigin + (y + 1) * sizeCellY);
                     cell.draw(canvas);
@@ -181,9 +170,6 @@ public class MatrixView extends View {
         for (int y = 0; y < matrix.getNextPiece().getHeight(); y++) {
             for (int x = 0; x < matrix.getNextPiece().getWidth(); x++) {
                 if (matrix.getNextPiece().getShape()[y][x] == 1) {
-                    /*canvas.drawRect(x0 * sizeCellX + x * sizeCellX / 2, y0 * sizeCellY + y * sizeCellY / 2,
-                            x0 * sizeCellX + (x + 1) * sizeCellX / 2, y0 * sizeCellY + (y + 1) * sizeCellY / 2,
-                            myPaint);*/
                     cell.setColorFilter(colorArray[type], PorterDuff.Mode.MULTIPLY);
                     cell.setBounds(x0 * sizeCellX + x * sizeCellX / 2, y0 * sizeCellY + y * sizeCellY / 2,
                             x0 * sizeCellX + (x + 1) * sizeCellX / 2, y0 * sizeCellY + (y + 1) * sizeCellY / 2);
@@ -192,8 +178,7 @@ public class MatrixView extends View {
             }
         }
 
-        //TextView myTextView = (TextView) this.getParent().findViewById(R.id.level_text_view);
-        //myTextView.setText("Level " + levelHandler.getLevel());
+        // display the current level, score and best score
         if (levelTextView != null) {
             levelTextView.setText("LEVEL " + levelHandler.getLevel());
             scoreTextView.setText("SCORE: " + levelHandler.getScore());
@@ -202,14 +187,12 @@ public class MatrixView extends View {
 
     }
 
+    // makes the current piece drop down one tile
     private void moveGame() {
         if (!paused) {
             if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
-                //refreshHandler.removeMessages(0);
-                //levelHandler.dropNormalSpeed();
-                refreshHandler.sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay());
+                refreshHandler.sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay()); // wait before moving again
             } else { // the current piece cannot drop anymore
-                //matrix.addNewPiece(1);
                 refreshHandler.sendEmptyMessage(MESSAGE.COLLISION.ordinal());
             }
         }
@@ -222,27 +205,31 @@ public class MatrixView extends View {
         REFRESH
     }
 
+    // the handler decides what to do next
     private class RefreshHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
 
-            if (msg.what == MESSAGE.COLLISION.ordinal()) { // new game, or the current piece cannot drop anymore
-                if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // case when the piece is moved after colliding
-                    //refreshHandler.removeMessages(0);
-                    refreshHandler.sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay());
+            if (msg.what == MESSAGE.COLLISION.ordinal()) { // new game, or if the current piece cannot drop anymore
+
+                // case when the piece is moved after colliding
+                if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
+                    refreshHandler.sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay()); // wait before moving again
                 }
+
+                // the piece was not moved after colliding
                 else {
                     int nbOfClearedRows = matrix.clearRows(); // check if some rows are complete and clear them
-                    if (nbOfClearedRows != 0) levelHandler.addPoints(nbOfClearedRows);
+                    if (nbOfClearedRows != 0) levelHandler.addPoints(nbOfClearedRows); // add points to the current score
 
-                    if (matrix.addNewPiece()) {
-                        //MatrixView.this.invalidate(); // redraw
-                        //this.removeMessages(0);
-                        //sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
-                        sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay());
+                    if (matrix.addNewPiece()) { // the current piece cannot move anymore, replace it with a new one
+                        sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay()); // wait before moving again
                     }
+
+                    // if a new piece cannot be added on top of the matrix, it's game over
                     else {
 
+                        // a dialog asking if the user wants to try again is displayed
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         builder.setCancelable(true);
                         builder.setTitle("Game over!");
@@ -251,16 +238,14 @@ public class MatrixView extends View {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        startNewGame();
+                                        startNewGame(); // start a new game
                                     }
                                 });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                User.startNewGame();
-                                ((TetrisActivity) getContext()).finish();
-                                //Intent intent = new Intent(getContext(), MainMenuActivity.class);
-                                //getContext().startActivity(intent);
+                                User.startNewGame(); // reset the current game
+                                ((TetrisActivity) getContext()).finish(); // go back to the main menu
                             }
                         });
 
@@ -269,26 +254,24 @@ public class MatrixView extends View {
 
                     }
                 }
+
+            // make the current piece drop down
             } else if (msg.what == MESSAGE.MOVE_GAME.ordinal()) {
-                moveGame(); //Log.d("mydebug", "MatrixView.RefreshHandler moving");
-                //MatrixView.this.invalidate(); // redraw
+                moveGame();
             }
 
             // MESSAGE.REFRESH
-            MatrixView.this.invalidate(); // redraw
+            MatrixView.this.invalidate(); // redraw the matrix
 
         }
     }
 
+    // when the user touches the screen
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
 
-        //Log.d("mydebug", "MatrixView.onTouchEvent");
-
         synchronized (event) { // prevents touchscreen events from flooding the main thread
-
-            //levelHandler.dropNormalSpeed();
 
             // initial touch
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -299,27 +282,22 @@ public class MatrixView extends View {
                 if (initialY > screenHeight * 0.9) {
                     levelHandler.dropFastSpeed();
                 }
-                /*else
-                    levelHandler.dropNormalSpeed();*/
             }
 
             // detect type of sliding movement
             else if (event.getAction() == MotionEvent.ACTION_UP) {
                 float curX = event.getRawX();
-                float curY = event.getRawY();
 
-                // stop touch at the bottom of the screen makes the piece drop at normal speed again
+                // stoping the touch at the bottom of the screen makes the piece drop at normal speed again
                 if (levelHandler.isFast)
                     levelHandler.dropNormalSpeed();
 
                 // no X movement: move on X axis (except if the controls are reversed)
                 else if (Math.abs(initialX - curX) < movementSensibilityX) {
                     if (initialX < screenWidth / 2) { // move left
-                        //Log.d("mydebug", "MatrixView.onTouchEvent move left");
                         if (User.touchToMove) matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
                         else matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
                     } else { // move right
-                        //Log.d("mydebug", "MatrixView.onTouchEvent move right");
                         if (User.touchToMove) matrix.movePiece(TetrisPiece.DIRECTION.RIGHT);
                         else matrix.rotatePiece(TetrisPiece.DIRECTION.RIGHT);
                     }
@@ -327,53 +305,20 @@ public class MatrixView extends View {
 
                 // X movement: rotation (except if the controls are reversed)
                 else  if (initialX < curX) { // rotate right
-                    //Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
                     if (User.touchToMove) matrix.rotatePiece(TetrisPiece.DIRECTION.RIGHT);
                     else matrix.movePiece(TetrisPiece.DIRECTION.RIGHT);
                 } else { // rotate left
-                    //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
                     if (User.touchToMove) matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
                     else matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
                 }
 
-                // simple touch: move on X axis
-                /*else {
-                    // stop touch at the bottom of the screen makes the piece drop at normal speed again
-                    //levelHandler.dropNormalSpeed();
-
-                    // horizontal movement
-                    if (initialX < screenWidth / 2) { // move left
-                        //Log.d("mydebug", "MatrixView.onTouchEvent move left");
-                        matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
-                    } else { // move right
-                        //Log.d("mydebug", "MatrixView.onTouchEvent move right");
-                        matrix.movePiece(TetrisPiece.DIRECTION.RIGHT);
-                    }
-
-                    //if (refreshHandler.hasMessages(1) == true) {
-                        //Log.d("mydebug", "MatrixView.onTouchEvent C hasMessages");
-                        //refreshHandler.removeMessages(1);
-                    //}
-                }*/
-
-                refreshHandler.sendEmptyMessage(MESSAGE.REFRESH.ordinal());
-
-            /*try {
-                Thread.sleep(touchDelay);
-            } catch (InterruptedException e) { }*/
-
-                // redraw
-                //this.invalidate();
+                refreshHandler.sendEmptyMessage(MESSAGE.REFRESH.ordinal()); // redraw the matrix
             }
-
-            /*if (event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
-                //levelHandler.dropNormalSpeed();
-                Log.d("mydebug", "MatrixView.onTouchEvent ACTION_HOVER_EXIT");
-            }*/
 
         }
 
         return true;
+
     }
 
     public void setLevelTextView(TextView levelTextView) {

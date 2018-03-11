@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import java.io.Serializable;
 
+// tetromino
 public class TetrisPiece implements Serializable {
 
     private int type;
@@ -11,7 +12,7 @@ public class TetrisPiece implements Serializable {
     private int[][] shape;
     private int color;
 
-    private int originX, originY;
+    private int originX, originY; // position of the top left corner of the piece on the matrix
 
     public TetrisPiece(int type) {
 
@@ -101,6 +102,7 @@ public class TetrisPiece implements Serializable {
         }
     }
 
+    // returns a copy of the current piece
     public TetrisPiece clone() {
         TetrisPiece p = new TetrisPiece(type);
         p.width = width;
@@ -108,22 +110,20 @@ public class TetrisPiece implements Serializable {
         p.shape = new int[height][width];
         for (int y = 0; y < height; y++) {
             p.shape[y] = shape[y].clone();
-            /*for (int x = 0; x < width; x++) {
-                p.shape[y][x] = shape[y][x];
-            }*/
         }
         p.originX = originX;
         p.originY = originY;
         return p;
     }
 
+    // the directions in which a piece can be moved or rotated
     public enum DIRECTION {
-        //NONE,
         DOWN,
         LEFT,
         RIGHT
     }
 
+    // rotates the piece to the left or to the right
     public void rotate(DIRECTION d) {
         int[][] oldShape = new int[height][width];
         for (int y = 0; y < height; y++)
@@ -138,7 +138,7 @@ public class TetrisPiece implements Serializable {
             for (int x = 0; x < width; x++)
                 if (d == DIRECTION.RIGHT)
                     shape[y][x] = oldShape[width - x - 1][y];
-                else
+                else // DIRECTION.LEFT
                     shape[y][x] = oldShape[x][height - y - 1];
     }
 

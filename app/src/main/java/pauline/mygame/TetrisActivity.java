@@ -1,15 +1,6 @@
 package pauline.mygame;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 // TODO list
@@ -17,8 +8,8 @@ import android.widget.TextView;
 // noises
 // google play
 // strings in resource file (android.R...)
-// add after game over (AdMob)
-// comment
+// ad after game over (AdMob)
+// choose colors in settings
 
 public class TetrisActivity extends MyActivity {
 
@@ -29,6 +20,7 @@ public class TetrisActivity extends MyActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tetris);
 
+        // set the fonts
         TextView levelTextView = (TextView) findViewById(R.id.level_text_view);
         levelTextView.setTypeface(Typefaces.get(this, "BAUHS93.TTF"));
 
@@ -38,6 +30,7 @@ public class TetrisActivity extends MyActivity {
         TextView bestScoreTextView = (TextView) findViewById(R.id.best_score_text_view);
         bestScoreTextView.setTypeface(Typefaces.get(this,"BAUHS93.TTF"));
 
+        // textViews in which the level and score will be displayed
         matrixView = (MatrixView) findViewById(R.id.matrix_view);
         matrixView.setLevelTextView(levelTextView);
         matrixView.setScoreTextView(scoreTextView);
@@ -46,13 +39,13 @@ public class TetrisActivity extends MyActivity {
 
     @Override
     public void onPause() {
-        matrixView.setPaused(true);
+        matrixView.setPaused(true); // pause the current game
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        matrixView.setPaused(false);
+        matrixView.setPaused(false); // start playing again
         matrixView.startGame();
         super.onResume();
     }
