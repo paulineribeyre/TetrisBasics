@@ -191,6 +191,7 @@ public class MatrixView extends View {
     private void moveGame() {
         if (!paused) {
             if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
+                if (levelHandler.isFast) levelHandler.addFastPoints(1);
                 refreshHandler.sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay()); // wait before moving again
             } else { // the current piece cannot drop anymore
                 refreshHandler.sendEmptyMessage(MESSAGE.COLLISION.ordinal());

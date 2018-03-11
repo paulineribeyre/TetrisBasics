@@ -10,6 +10,9 @@ import android.widget.TextView;
 // strings in resource file (android.R...)
 // ad after game over (AdMob)
 // choose colors in settings
+// rotate by tapping the piece
+// option: disable speed increase when next level
+// option: level start
 
 public class TetrisActivity extends MyActivity {
 
