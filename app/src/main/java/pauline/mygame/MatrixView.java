@@ -67,7 +67,7 @@ public class MatrixView extends View {
         if (colorArray == null)
             initColorArray();
         //if (firstTimeGameStarts){
-        refreshHandler.sendEmptyMessage(1); // start the game
+        refreshHandler.sendEmptyMessage(MESSAGE.COLLISION.ordinal()); // start the game
         //    firstTimeGameStarts = false;
         //}
     }
@@ -207,22 +207,29 @@ public class MatrixView extends View {
             if (matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) {
                 //refreshHandler.removeMessages(0);
                 //levelHandler.dropNormalSpeed();
-                refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
+                refreshHandler.sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay());
             } else { // the current piece cannot drop anymore
                 //matrix.addNewPiece(1);
-                refreshHandler.sendEmptyMessage(1);
+                refreshHandler.sendEmptyMessage(MESSAGE.COLLISION.ordinal());
             }
         }
+    }
+
+    // types of messages handled by the RefreshHandler
+    private enum MESSAGE {
+        COLLISION,
+        MOVE_GAME,
+        REFRESH
     }
 
     private class RefreshHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
 
-            if (msg.what == 1) { // new game, or the current piece cannot drop anymore
+            if (msg.what == MESSAGE.COLLISION.ordinal()) { // new game, or the current piece cannot drop anymore
                 if (matrix.getCurrentPiece() != null && matrix.movePiece(TetrisPiece.DIRECTION.DOWN)) { // case when the piece is moved after colliding
                     //refreshHandler.removeMessages(0);
-                    refreshHandler.sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
+                    refreshHandler.sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay());
                 }
                 else {
                     int nbOfClearedRows = matrix.clearRows(); // check if some rows are complete and clear them
@@ -232,7 +239,7 @@ public class MatrixView extends View {
                         //MatrixView.this.invalidate(); // redraw
                         //this.removeMessages(0);
                         //sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
-                        sendEmptyMessageDelayed(0, levelHandler.getMoveDelay());
+                        sendEmptyMessageDelayed(MESSAGE.MOVE_GAME.ordinal(), levelHandler.getMoveDelay());
                     }
                     else {
 
@@ -262,17 +269,14 @@ public class MatrixView extends View {
 
                     }
                 }
-            } else if (msg.what == 0) {
+            } else if (msg.what == MESSAGE.MOVE_GAME.ordinal()) {
                 moveGame(); //Log.d("mydebug", "MatrixView.RefreshHandler moving");
                 //MatrixView.this.invalidate(); // redraw
             }
 
-            // TODO explicit msg.what values
-            //else if (msg.what == 2) { // stop moving
-                // stop moving
-            //}
-
+            // MESSAGE.REFRESH
             MatrixView.this.invalidate(); // redraw
+
         }
     }
 
@@ -308,19 +312,32 @@ public class MatrixView extends View {
                 if (levelHandler.isFast)
                     levelHandler.dropNormalSpeed();
 
-                // X movement: rotation
-                else if (Math.abs(initialX - curX) >= movementSensibilityX) {
-                    if (initialX > curX) { // rotate right
-                        //Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
-                        matrix.rotatePiece(TetrisPiece.DIRECTION.RIGHT);
-                    } else { // rotate left
-                        //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
-                        matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
+                // no X movement: move on X axis (except if the controls are reversed)
+                else if (Math.abs(initialX - curX) < movementSensibilityX) {
+                    if (initialX < screenWidth / 2) { // move left
+                        //Log.d("mydebug", "MatrixView.onTouchEvent move left");
+                        if (User.touchToMove) matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
+                        else matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
+                    } else { // move right
+                        //Log.d("mydebug", "MatrixView.onTouchEvent move right");
+                        if (User.touchToMove) matrix.movePiece(TetrisPiece.DIRECTION.RIGHT);
+                        else matrix.rotatePiece(TetrisPiece.DIRECTION.RIGHT);
                     }
                 }
 
+                // X movement: rotation (except if the controls are reversed)
+                else  if (initialX < curX) { // rotate right
+                    //Log.d("mydebug", "MatrixView.onTouchEvent rotate right");
+                    if (User.touchToMove) matrix.rotatePiece(TetrisPiece.DIRECTION.RIGHT);
+                    else matrix.movePiece(TetrisPiece.DIRECTION.RIGHT);
+                } else { // rotate left
+                    //Log.d("mydebug", "MatrixView.onTouchEvent rotate left");
+                    if (User.touchToMove) matrix.rotatePiece(TetrisPiece.DIRECTION.LEFT);
+                    else matrix.movePiece(TetrisPiece.DIRECTION.LEFT);
+                }
+
                 // simple touch: move on X axis
-                else {
+                /*else {
                     // stop touch at the bottom of the screen makes the piece drop at normal speed again
                     //levelHandler.dropNormalSpeed();
 
@@ -337,9 +354,9 @@ public class MatrixView extends View {
                         //Log.d("mydebug", "MatrixView.onTouchEvent C hasMessages");
                         //refreshHandler.removeMessages(1);
                     //}
-                }
+                }*/
 
-                refreshHandler.sendEmptyMessage(-1);
+                refreshHandler.sendEmptyMessage(MESSAGE.REFRESH.ordinal());
 
             /*try {
                 Thread.sleep(touchDelay);

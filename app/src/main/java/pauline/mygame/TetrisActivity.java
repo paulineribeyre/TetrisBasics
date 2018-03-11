@@ -16,8 +16,6 @@ import android.widget.TextView;
 // music (+ add mute/volume in settings)
 // noises
 // google play
-// settings switch rotate/move commands
-// keep moving when hold left or right
 // strings in resource file (android.R...)
 // add after game over (AdMob)
 // comment

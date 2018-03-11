@@ -81,7 +81,7 @@ public class SettingsActivity extends MyActivity {
 
     private void copyUserSettings() {
         randomColorsToggleButton.setChecked(User.useRandomColors);
-        switchCommandsToggleButton.setChecked(User.touchToMove);
+        switchCommandsToggleButton.setChecked(!User.touchToMove);
         gameWidthEditText.setText(""+User.nbCellsX);
         gamHeightEditText.setText(""+User.nbCellsY);
     }

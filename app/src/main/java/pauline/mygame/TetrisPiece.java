@@ -136,7 +136,7 @@ public class TetrisPiece implements Serializable {
         shape = new int[height][width];
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
-                if (d == DIRECTION.LEFT)
+                if (d == DIRECTION.RIGHT)
                     shape[y][x] = oldShape[width - x - 1][y];
                 else
                     shape[y][x] = oldShape[x][height - y - 1];

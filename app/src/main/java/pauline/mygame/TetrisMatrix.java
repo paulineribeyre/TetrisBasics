@@ -33,17 +33,6 @@ public class TetrisMatrix implements Serializable {
         this(User.nbCellsY, User.nbCellsX);
     }
 
-    public void printMatrix(int[][] array) { // TODO remove
-        String str;
-        for (int y = 0; y < nbCellsY; y ++) {
-            str = "";
-            for (int x = 0; x < nbCellsX; x++) {
-                str += array[y][x] + " ";
-            }
-            Log.d("mydebug", "TetrisMatrix.printMatrix " + str);
-        }
-    }
-
     // create a new piece at random
     private TetrisPiece createNewPiece() {
         int type = new Random().nextInt(7) + 1;
@@ -56,12 +45,7 @@ public class TetrisMatrix implements Serializable {
     public boolean addNewPiece() {
         boolean canAdd = true;
 
-        //int[] arr = {1, 2, 3, 5};
-        //int type = arr[new Random().nextInt(arr.length)]; // TODO remove
-        //int type = 2;
-
         currentPiece = nextPiece;
-
         if (!isCollision(currentPiece, array)) {
             placePieceOnMatrix();
             nextPiece = createNewPiece();

@@ -50,13 +50,17 @@ public class MainMenuActivity extends MyActivity {
 
     public void openInstructions(View view) {
 
+        String instructions = "";
+        if (User.touchToMove)
+            instructions += "To move horizontally, tap on the left or right half of the screen.\nTo rotate a tetromino, drag your finger to the left or right of the screen.\n";
+        else
+            instructions += "To move horizontally, drag your finger to the left or right of the screen.\nTo rotate a tetromino, tap on the left or right half of the screen.\n";
+        instructions += "To turn on fast speed, press the bottom of the screen.\nYou can pause the game by closing the application or by going back to the main menu.";
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("How to play");
-        builder.setMessage("To move horizontally, tap on the left or right half of your screen.\n" +
-                "To rotate a tetromino, drag your finger to the left or right.\n" +
-                "To turn on fast speed, press the bottom of the screen.\n" +
-                "You can pause the game by going back to the main menu.");
+        builder.setMessage(instructions);
         builder.setPositiveButton("Understood",
                 new DialogInterface.OnClickListener() {
                     @Override
