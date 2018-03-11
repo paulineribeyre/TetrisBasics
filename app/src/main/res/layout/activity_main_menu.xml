@@ -69,6 +69,16 @@
         <Button
             android:layout_width="80dp"
             android:layout_height="50dp"
+            android:text="@string/button_instructions_str"
+            android:id="@+id/instructions_button"
+            android:layout_gravity="center_horizontal"
+            android:onClick="openInstructions"
+            android:textColor="#ffffff"
+            android:background="@drawable/button_bottom_border"/>
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:text="@string/button_settings_str"
             android:id="@+id/settings_button"
             android:layout_gravity="center_horizontal"

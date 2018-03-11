@@ -337,9 +337,9 @@ public class MatrixView extends View {
                         //Log.d("mydebug", "MatrixView.onTouchEvent C hasMessages");
                         //refreshHandler.removeMessages(1);
                     //}
-                    refreshHandler.sendEmptyMessage(-1);
                 }
 
+                refreshHandler.sendEmptyMessage(-1);
 
             /*try {
                 Thread.sleep(touchDelay);

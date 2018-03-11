@@ -13,15 +13,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 // TODO list
-// explain controls
 // music (+ add mute/volume in settings)
 // noises
 // google play
 // settings switch rotate/move commands
-// settings matrix size
 // keep moving when hold left or right
 // strings in resource file (android.R...)
 // add after game over (AdMob)
+// comment
 
 public class TetrisActivity extends MyActivity {
 

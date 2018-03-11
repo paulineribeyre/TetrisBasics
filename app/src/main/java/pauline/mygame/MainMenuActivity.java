@@ -1,7 +1,9 @@
 package pauline.mygame;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +46,26 @@ public class MainMenuActivity extends MyActivity {
     public void openGame(View view) {
         Intent intent = new Intent(MainMenuActivity.this, TetrisActivity.class);
         startActivity(intent);
+    }
+
+    public void openInstructions(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("How to play");
+        builder.setMessage("To move horizontally, tap on the left or right half of your screen.\n" +
+                "To rotate a tetromino, drag your finger to the left or right.\n" +
+                "To turn on fast speed, press the bottom of the screen.\n" +
+                "You can pause the game by going back to the main menu.");
+        builder.setPositiveButton("Understood",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     public void openSettings(View view) {

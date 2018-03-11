@@ -5,6 +5,7 @@
 
     <!-- Main Menu -->
     <string name="button_play_str">Play</string>
+    <string name="button_instructions_str">Controls</string>
     <string name="button_settings_str">Settings</string>
     <string name="button_exit_str">Exit</string>
 
