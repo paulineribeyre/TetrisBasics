@@ -232,7 +232,7 @@ public class MatrixView extends View {
 
                         // a dialog asking if the user wants to try again is displayed
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setCancelable(true);
+                        builder.setCancelable(false);
                         builder.setTitle("Game over!");
                         builder.setMessage("Do you want to start a new game?");
                         builder.setPositiveButton("Yes",
@@ -245,7 +245,7 @@ public class MatrixView extends View {
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                User.startNewGame(); // reset the current game
+                                //User.startNewGame(); // reset the current game
                                 ((TetrisActivity) getContext()).finish(); // go back to the main menu
                             }
                         });
